@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
+import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
 
@@ -11,23 +12,28 @@ class ContactList extends StatefulWidget {
 }
 
 class _ContactListState extends State<ContactList> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ft_hangout'),
       ),
-      body: _buildList(),
+      body: Consumer<ContactListModel>(
+        builder: (context, list, child) {
+          return _buildList(list);
+        },
+      )
     );
   }
 
-  Widget _buildList() {
-    if (dummyContactList.isNotEmpty) {
+  Widget _buildList(ContactListModel list) {
+    if (list.contacts.isNotEmpty) {
       return ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: dummyContactList.length,
+        itemCount: list.contacts.length,
         itemBuilder: (BuildContext context, int index) {
-          return _buildRowContact(dummyContactList[index]);
+          return _buildRowContact(list, list.contacts[index]);
         },
       );
     } else {
@@ -35,7 +41,7 @@ class _ContactListState extends State<ContactList> {
     }
   }
 
-  Widget _buildRowContact(Contact currentContact) {
+  Widget _buildRowContact(ContactListModel list, Contact currentContact) {
       return GestureDetector(
           child: Card(
             child: ListTile(
@@ -44,7 +50,10 @@ class _ContactListState extends State<ContactList> {
                 height: 64,
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 alignment: Alignment.center,
-                child: const Icon(Icons.person, size: 50,),
+                child: const CircleAvatar(
+                  radius: 24,
+                  child: Icon(Icons.person, size: 48,),
+                ),
               ),
               title: Text(
                 currentContact.name,
@@ -56,7 +65,7 @@ class _ContactListState extends State<ContactList> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ContactDetails(currentContact)
+                builder: (context) => ContactDetails(list, currentContact)
             ));
           }, 
       );

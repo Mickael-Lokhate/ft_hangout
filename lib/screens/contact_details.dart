@@ -4,7 +4,8 @@ import '../models/contact.dart';
 
 class ContactDetails extends StatelessWidget {
   final Contact contact;
-  const ContactDetails(this.contact, { Key? key }) : super(key: key);
+  ContactListModel list;
+  ContactDetails(this.list, this.contact, { Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,18 +13,20 @@ class ContactDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(contact.name),
       ),
-      body: _buildContactDetails(),
+      body: _buildContactDetails(context),
     );
   }
 
-  Widget _buildContactDetails() {
+  Widget _buildContactDetails(context) {
     return Container( 
       padding: const EdgeInsets.all(10),
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildHeader(),
-        _buildActionButtons(contact)
+        _buildActionButtons(context, contact),
+        const SizedBox(height: 10,),
+        _buildCard('Phone', contact.phonenumber)
       ],
     ));
   }
@@ -56,27 +59,30 @@ class ContactDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(Contact currentContact) {
+  Widget _buildActionButtons(context, Contact currentContact) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildButton('Message', Icons.message),
+          _buildButton('Message', Icons.message, () {}),
           const SizedBox(width: 8), 
-          _buildButton('Call', Icons.call),
+          _buildButton('Call', Icons.call, () {}),
           const SizedBox(width: 8), 
-          _buildButton('Edit', Icons.edit),
+          _buildButton('Edit', Icons.edit, () {}),
           const SizedBox(width: 8), 
-          _buildButton('Delete', Icons.delete),
+          _buildButton('Delete', Icons.delete, () {
+            list.remove(currentContact);
+            Navigator.of(context).pop();
+          }),
         ],
       )
     );
   }
 
-  Widget _buildButton(String name, IconData icon) {
+  Widget _buildButton(String name, IconData icon, void Function() action) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: action,
       child: Container(
       padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
       child: Column(
@@ -86,6 +92,20 @@ class ContactDetails extends StatelessWidget {
         ],
       ),
       )
+    );
+  }
+
+  Widget _buildCard(String leading, String title) {
+    return Card(
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Text(leading)
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.blueAccent),),
+      ),
     );
   }
 }
