@@ -13,7 +13,7 @@ enum FieldType {
 }
 
 class EditContactForm extends StatefulWidget {
-  final Contact contact;
+  final Contact? contact;
   final ContactListModel list;
   const EditContactForm(this.contact, this.list, { Key? key }) : super(key: key);
 
@@ -31,11 +31,14 @@ class _EditContactFormState extends State<EditContactForm> {
 
   @override
   Widget build(BuildContext context) {
-    nameController.text = widget.contact.name;
-    lastnameController.text = widget.contact.lastname ?? '';
-    phoneNumberController.text = widget.contact.phonenumber;
-    emailController.text = widget.contact.email ?? '';
-    moreInfoController.text = widget.contact.moreInfos ?? '';
+    if (widget.contact != null) {
+      nameController.text = widget.contact!.name;
+      lastnameController.text = widget.contact!.lastname ?? '';
+      phoneNumberController.text = widget.contact!.phonenumber;
+      emailController.text = widget.contact!.email ?? '';
+      moreInfoController.text = widget.contact!.moreInfos ?? '';
+    }
+    
   
     return Form(
       key: _formKey,
@@ -114,9 +117,9 @@ class _EditContactFormState extends State<EditContactForm> {
   Widget _buildValidationButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
+        if (_formKey.currentState!.validate() && widget.contact != null) {
           widget.list.updateContact(
-            widget.contact.id,
+            widget.contact!.id,
             nameController.text,
             lastnameController.text,
             phoneNumberController.text,
@@ -131,9 +134,26 @@ class _EditContactFormState extends State<EditContactForm> {
               )
           );
           Navigator.of(context).pop();
+        } else if (_formKey.currentState!.validate() && widget.contact == null) {
+          Contact newContact = Contact(
+            widget.list.contacts.length - 1,
+            nameController.text,
+            phoneNumberController.text,
+            lastnameController.text,
+            emailController.text,
+            null,
+            moreInfoController.text);
+          widget.list.add(newContact);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Contact succefully created'),
+              backgroundColor: Colors.greenAccent,
+            )
+          );
+          Navigator.of(context).pop();
         }
       },
-      child: const Text('Save')
+      child: widget.contact != null ? const Text( 'Save') : const Text('Create')
     );
   }
 }
