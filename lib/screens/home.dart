@@ -65,7 +65,7 @@ class _ContactListState extends State<ContactList> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ContactDetails(list, currentContact)
+                builder: (context) => ContactDetails(currentContact)
             ));
           }, 
       );

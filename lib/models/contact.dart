@@ -10,7 +10,7 @@ class Contact {
   String?   email;
   String?   imageUrl;
   String?   moreInfos;
-  
+
   Contact(this.id, this.name, this.phonenumber, [this.lastname, this.email, this.imageUrl, this.moreInfos]);
 }
 
@@ -59,14 +59,18 @@ class ContactListModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateContact(int id, Contact newContact) {
+  void updateContact(int id, String? name, String? lastName, String? phoneNumber, String? email, String? imageUrl, String? moreInfos) {
     Contact findContact = _contacts.firstWhere((contact) => contact.id == id);
-    findContact.name = newContact.name;
-    findContact.lastname = newContact.lastname;
-    findContact.phonenumber = newContact.phonenumber;
-    findContact.email = newContact.email;
-    findContact.imageUrl = newContact.imageUrl;
-    findContact.moreInfos = newContact.moreInfos;
+    if (name != null && name.isNotEmpty) {
+      findContact.name = name;
+    }
+    if (phoneNumber != null && phoneNumber.isNotEmpty) {
+      findContact.phonenumber = phoneNumber;
+    }
+    findContact.lastname = lastName;
+    findContact.email = email;
+    findContact.imageUrl = imageUrl;
+    findContact.moreInfos = moreInfos;
     notifyListeners();
   }
 

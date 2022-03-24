@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ft_hangout/screens/edit_contact.dart';
+import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
 
 class ContactDetails extends StatelessWidget {
   final Contact contact;
-  ContactListModel list;
-  ContactDetails(this.list, this.contact, { Key? key }) : super(key: key);
+  const ContactDetails(this.contact, { Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,18 +14,20 @@ class ContactDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(contact.name),
       ),
-      body: _buildContactDetails(context),
+      body: Consumer<ContactListModel>(
+        builder: (context, list, child) => _buildContactDetails(context, list),
+      )
     );
   }
 
-  Widget _buildContactDetails(context) {
+  Widget _buildContactDetails(context, ContactListModel list) {
     return Container( 
       padding: const EdgeInsets.all(10),
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildHeader(),
-        _buildActionButtons(context, contact),
+        _buildActionButtons(context, list, contact),
         const SizedBox(height: 10,),
         _buildCard('Phone', contact.phonenumber)
       ],
@@ -59,7 +62,7 @@ class ContactDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(context, Contact currentContact) {
+  Widget _buildActionButtons(context, ContactListModel list, Contact currentContact) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
@@ -69,7 +72,11 @@ class ContactDetails extends StatelessWidget {
           const SizedBox(width: 8), 
           _buildButton('Call', Icons.call, () {}),
           const SizedBox(width: 8), 
-          _buildButton('Edit', Icons.edit, () {}),
+          _buildButton('Edit', Icons.edit, () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => EditContact(currentContact))
+            );
+          }),
           const SizedBox(width: 8), 
           _buildButton('Delete', Icons.delete, () {
             list.remove(currentContact);
