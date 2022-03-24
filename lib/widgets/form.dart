@@ -125,12 +125,15 @@ class _EditContactFormState extends State<EditContactForm> {
             moreInfoController.text
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Contact has been updated'))
+            const SnackBar(
+              content: Text('Contact has been updated'),
+              backgroundColor: Colors.greenAccent,
+              )
           );
           Navigator.of(context).pop();
         }
       },
-      child: const Text('Submit')
+      child: const Text('Save')
     );
   }
 }
