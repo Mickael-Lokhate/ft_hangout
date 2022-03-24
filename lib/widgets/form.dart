@@ -12,16 +12,16 @@ enum FieldType {
   moreInfos
 }
 
-class EditContactForm extends StatefulWidget {
+class ContactForm extends StatefulWidget {
   final Contact? contact;
   final ContactListModel list;
-  const EditContactForm(this.contact, this.list, { Key? key }) : super(key: key);
+  const ContactForm(this.contact, this.list, { Key? key }) : super(key: key);
 
   @override
-  _EditContactFormState createState() => _EditContactFormState();
+  _ContactFormState createState() => _ContactFormState();
 }
 
-class _EditContactFormState extends State<EditContactForm> {
+class _ContactFormState extends State<ContactForm> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final lastnameController = TextEditingController();
