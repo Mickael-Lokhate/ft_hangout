@@ -23,7 +23,12 @@ class _ContactListState extends State<ContactList> {
         builder: (context, list, child) {
           return _buildList(list);
         },
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.blueAccent,
+        child: const Icon(Icons.person_add),
+      ),
     );
   }
 
