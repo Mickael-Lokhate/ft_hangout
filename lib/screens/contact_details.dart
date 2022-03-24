@@ -17,11 +17,15 @@ class ContactDetails extends StatelessWidget {
   }
 
   Widget _buildContactDetails() {
-    return Column(
+    return Container( 
+      padding: const EdgeInsets.all(10),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _buildHeader()
+        _buildHeader(),
+        _buildActionButtons(contact)
       ],
-    );
+    ));
   }
 
   Widget _buildHeader() {
@@ -29,13 +33,59 @@ class ContactDetails extends StatelessWidget {
     if (contact.lastname != null) {
       completeName += ' ' + contact.lastname!;
     }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.person),
-        Text(completeName),
-        if (contact.email != null) Text(contact.email!)
-      ],
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const CircleAvatar(
+            radius: 64,
+            child: Icon(Icons.person, size: 128,)
+            ,),
+          const SizedBox(height: 8), 
+          Text(
+            completeName,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+          const SizedBox(height: 8), 
+          if (contact.email != null) Text(
+            contact.email!,
+            style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic, fontSize: 14),
+          )
+        ],
+      )
+    );
+  }
+
+  Widget _buildActionButtons(Contact currentContact) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildButton('Message', Icons.message),
+          const SizedBox(width: 8), 
+          _buildButton('Call', Icons.call),
+          const SizedBox(width: 8), 
+          _buildButton('Edit', Icons.edit),
+          const SizedBox(width: 8), 
+          _buildButton('Delete', Icons.delete),
+        ],
+      )
+    );
+  }
+
+  Widget _buildButton(String name, IconData icon) {
+    return ElevatedButton(
+      onPressed: () {},
+      child: Container(
+      padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+      child: Column(
+        children: [
+          Icon(icon),
+          Text(name)
+        ],
+      ),
+      )
     );
   }
 }

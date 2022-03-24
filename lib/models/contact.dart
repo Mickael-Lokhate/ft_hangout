@@ -4,8 +4,9 @@ class Contact {
   String?   lastname;
   String?   email;
   String?   imageUrl;
+  String?   moreInfos;
   
-  Contact(this.name, this.phonenumber, [this.lastname, this.email, this.imageUrl]);
+  Contact(this.name, this.phonenumber, [this.lastname, this.email, this.imageUrl, this.moreInfos]);
 }
 
 List<Contact> dummyContactList = [
