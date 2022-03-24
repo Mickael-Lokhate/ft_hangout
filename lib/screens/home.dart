@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
+import 'package:ft_hangout/screens/create_contact.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
@@ -25,7 +26,11 @@ class _ContactListState extends State<ContactList> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const CreateContact())
+          );
+        },
         backgroundColor: Colors.blueAccent,
         child: const Icon(Icons.person_add),
       ),
