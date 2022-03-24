@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:ft_hangout/screens/contact_details.dart';
 
 import '../models/contact.dart';
 
@@ -24,15 +23,12 @@ class _ContactListState extends State<ContactList> {
 
   Widget _buildList() {
     if (dummyContactList.isNotEmpty) {
-      return ListView.separated(
+      return ListView.builder(
         padding: const EdgeInsets.all(8),
         itemCount: dummyContactList.length,
         itemBuilder: (BuildContext context, int index) {
           return _buildRowContact(dummyContactList[index]);
         },
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          color: Colors.grey,
-        ),
       );
     } else {
       return const Center(child: Text('Add your first contact with the + button'),);
@@ -40,19 +36,29 @@ class _ContactListState extends State<ContactList> {
   }
 
   Widget _buildRowContact(Contact currentContact) {
-      return ListTile(
-        leading: Container(
-          width: 64,
-          height: 64,
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          alignment: Alignment.center,
-          child: const Icon(Icons.person, size: 50,),
-        ),
-        title: Text(
-          currentContact.name,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(currentContact.phonenumber),
+      return GestureDetector(
+          child: Card(
+            child: ListTile(
+              leading: Container(
+                width: 64,
+                height: 64,
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                alignment: Alignment.center,
+                child: const Icon(Icons.person, size: 50,),
+              ),
+              title: Text(
+                currentContact.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(currentContact.phonenumber),
+            )
+          ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ContactDetails(currentContact)
+            ));
+          }, 
       );
   }
 }
