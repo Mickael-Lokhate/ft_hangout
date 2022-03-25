@@ -46,7 +46,7 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
 
       telephony.getSentSms(
         columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE_SENT, SmsColumn.DATE,SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
-        filter: SmsFilter.where(SmsColumn.THREAD_ID).equals(tmp[0].threadId.toString()),
+        filter: SmsFilter.where(SmsColumn.ADDRESS).equals(widget.currentContact.phonenumber),
         sortOrder: [OrderBy(SmsColumn.DATE)]
       ).then((valueSent) {
           tmp += valueSent;
