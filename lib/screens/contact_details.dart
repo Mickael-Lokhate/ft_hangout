@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
+import 'package:ft_hangout/screens/messages.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
@@ -69,7 +70,11 @@ class ContactDetails extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildButton('Message', Icons.message, () {}),
+          _buildButton('Message', Icons.message, () {
+           Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MessagesInterface(currentContact))
+            ); 
+          }),
           const SizedBox(width: 8), 
           _buildButton('Call', Icons.call, () {}),
           const SizedBox(width: 8), 
