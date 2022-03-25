@@ -80,8 +80,42 @@ class ContactDetails extends StatelessWidget {
           }),
           const SizedBox(width: 8), 
           _buildButton('Delete', Icons.delete, () {
-            list.remove(currentContact);
-            Navigator.of(context).pop();
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text('Delete ${currentContact.name}'),
+                content: Text('Do you really want to delete ${currentContact.name} ?'),
+                actions: <Widget>[
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.redAccent,
+                      textStyle: const TextStyle(
+                          fontSize: 16.0,
+                      )
+                    ),
+                    onPressed: () {
+                      list.remove(currentContact);
+                      Navigator.of(context).pop('Remove');
+                      Navigator.of(context).pop();
+                    }, 
+                    child: Text("Good bye ${currentContact.name}")
+                  ),
+                   TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      )
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop('Cancel');
+                    }, 
+                    child: const Text("Cancel")
+                  )
+                ],
+              )
+            );
+            
           }),
         ],
       )
