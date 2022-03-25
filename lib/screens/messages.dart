@@ -40,11 +40,14 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
   Widget _buildForm() {
     return Form(
       key: _formKey,
-      child: Row(
-        children: <Widget>[
-          Expanded(child: _buildMessageInput()),
-          _buildSendButton()
-        ],
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(child: _buildMessageInput()),
+            _buildSendButton()
+          ],
+        )
       )
     );
   }
@@ -54,7 +57,7 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
       controller: messageController,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
-        hintText: 'Message'
+        hintText: 'Type a Message'
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -70,8 +73,6 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
       onPressed: () async {
         bool? permSms = await widget.telephony.requestSmsPermissions;
         if (_formKey.currentState!.validate() && permSms != null && permSms) {
-            print('NEED SEND MESSAGE');
-            
             await widget.telephony.sendSms(
               to: widget.currentContact.phonenumber,
               message: messageController.text,
@@ -80,7 +81,7 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
             messageController.text = '';
         }
       },
-      child: const Text('Send'),
+      child: const Icon(Icons.send),
     );
   }
 
