@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:provider/provider.dart';
 
@@ -103,16 +104,27 @@ class ContactDetails extends StatelessWidget {
   }
 
   Widget _buildCard(String leading, String title) {
-    return Card(
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Text(leading)
+    return GestureDetector(
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: title));
+      },
+      child: Tooltip(
+        triggerMode: TooltipTriggerMode.tap,
+        showDuration: const Duration(milliseconds: 1500),
+        message: leading + ' copied !',
+        child:Card(
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Text(leading)
+            ),
+            title:  Text(
+                title,
+                style: const TextStyle(color: Colors.blueAccent),
+              )
+            ),
+          ),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(color: Colors.blueAccent),),
-      ),
     );
   }
 }
