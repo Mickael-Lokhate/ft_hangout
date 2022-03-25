@@ -3,6 +3,8 @@ import 'package:ft_hangout/models/contact.dart';
 import 'package:ft_hangout/widgets/form.dart';
 import 'package:provider/provider.dart';
 
+import '../models/config.dart';
+
 class EditContact extends StatefulWidget {
   final Contact     contact;
   const EditContact(this.contact, { Key? key }) : super(key: key);
@@ -17,6 +19,7 @@ class _EditContactState extends State<EditContact> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit ' + widget.contact.name),
+        backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Consumer<ContactListModel>(
         builder: (context, list, child) {

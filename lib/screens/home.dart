@@ -18,20 +18,34 @@ class _ContactListState extends State<ContactList> {
   
   @override
   Widget build(BuildContext context) {
-    
-    
-
-    return Consumer<HeaderColor>(builder: (c, color, child) {
-      setState(() {
-        widget.headerColor = color.headerColor;
-      });
-       return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('ft_hangout'),
         backgroundColor: widget.headerColor,
         actions: [
           PopupMenuButton(
-            onSelected: (int value) => headerColorGlobal.updateColor(value),
+            onSelected: (int value) {
+              setState(() {
+                switch (value) {
+                  case 1:
+                    widget.headerColor = Colors.redAccent;
+                    headerColorGlobal.updateColor(value);
+                  break;
+                  case 2:
+                    widget.headerColor = Colors.blueAccent;
+                    headerColorGlobal.updateColor(value);
+                    break;
+                  case 3:
+                    widget.headerColor = Colors.yellowAccent;
+                    headerColorGlobal.updateColor(value);
+                    break;
+                  case 4:
+                    widget.headerColor = Colors.greenAccent;
+                    headerColorGlobal.updateColor(value);
+                    break;
+                }
+              });
+            },
             itemBuilder: (context) => [
               const PopupMenuItem(child: Text('Red'), value: 1),
               const PopupMenuItem(child: Text('Blue'), value: 2,),
@@ -56,7 +70,6 @@ class _ContactListState extends State<ContactList> {
         child: const Icon(Icons.person_add),
       ),
     );
-    });
   }
 
   Widget _buildList(ContactListModel list) {

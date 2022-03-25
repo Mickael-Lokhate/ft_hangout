@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class ContactDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(contact.name),
+        backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Consumer<ContactListModel>(
         builder: (context, list, child) => _buildContactDetails(context, list),
