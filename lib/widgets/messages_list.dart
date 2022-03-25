@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/models/contact.dart';
 import 'package:telephony/telephony.dart';
@@ -33,14 +35,35 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
     }
   }
 
-   void _getAllmessage() {
-     telephony.getInboxSms(
-        columns: [SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE_SENT, SmsColumn.SEEN, SmsColumn.READ],
+   void _getAllmessage() async {
+     List<SmsMessage> tmp;
+
+     tmp = await telephony.getInboxSms(
+        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE, SmsColumn.DATE_SENT, SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals(widget.currentContact.phonenumber),
         sortOrder: [OrderBy(SmsColumn.DATE_SENT)]
-      ).then((value) {
+      );
+
+      telephony.getSentSms(
+        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE_SENT, SmsColumn.DATE,SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
+        filter: SmsFilter.where(SmsColumn.THREAD_ID).equals(tmp[0].threadId.toString()),
+        sortOrder: [OrderBy(SmsColumn.DATE)]
+      ).then((valueSent) {
+          tmp += valueSent;
+          tmp.sort((m1, m2) {
+            DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.dateSent! * 1000);
+            DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.dateSent! * 1000);
+
+            if (m1.type == SmsType.MESSAGE_TYPE_SENT) {
+              m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000); 
+            }
+            if (m2.type == SmsType.MESSAGE_TYPE_SENT) {
+              m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000); 
+            }
+            return m2Date.compareTo(m1Date);
+          });
         setState(() {
-          widget.messages = value;
+            widget.messages = tmp;
         });
       });
   }

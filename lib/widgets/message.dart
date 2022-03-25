@@ -16,13 +16,19 @@ class MessageWidget extends StatelessWidget {
   Widget _buildMessage() {
     MaterialAccentColor bgColor = Colors.blueAccent;
     CrossAxisAlignment align = CrossAxisAlignment.end;
-    if (message.address == contact.phonenumber) {
+    TextAlign textAlign = TextAlign.right;
+    if (message.type != SmsType.MESSAGE_TYPE_SENT) {
       bgColor = Colors.greenAccent;
       align = CrossAxisAlignment.start;
+      textAlign = TextAlign.left;
     }
 
     DateTime dateSent = DateTime.fromMicrosecondsSinceEpoch(message.dateSent! * 1000);
-    String stringDate = "${dateSent.day} ${_convertMonth(dateSent.month)} ${dateSent.hour.toString().padLeft(2, '0')}:${dateSent.minute.toString().padLeft(2, '0')}";
+    if (message.type == SmsType.MESSAGE_TYPE_SENT) {
+      dateSent = DateTime.fromMicrosecondsSinceEpoch(message.date! * 1000); 
+    }
+
+    String stringDate = "${dateSent.day} ${_convertMonth(dateSent.month)} ${dateSent.hour.toString().padLeft(2, '0')}:${dateSent.minute.toString().padLeft(2, '0')}";   
     Icon icon = const Icon(Icons.check_circle_outline, size: 16,);
     if (message.read != null && message.read!) {
       icon = const Icon(Icons.check_circle, color: Colors.blueAccent, size: 16,);
@@ -39,13 +45,13 @@ class MessageWidget extends StatelessWidget {
           Card(
             child: Container(
               padding: const EdgeInsets.all(10),
-              child: Text(message.body!)
+              child: Text(message.body!,)
             ),
             color: bgColor,
           ),
           Row(
             children: [
-              Text(stringDate),
+              Text(stringDate, textAlign: textAlign),
               icon
             ],
           )

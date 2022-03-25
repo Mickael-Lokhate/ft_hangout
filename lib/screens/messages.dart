@@ -15,7 +15,6 @@ class MessagesInterface extends StatefulWidget {
 class _MessagesInterfaceState extends State<MessagesInterface> {
  final messageController = TextEditingController();
  final _formKey = GlobalKey<FormState>();
- late List<SmsMessage> messages;
 
   @override
   Widget build(BuildContext context) {
