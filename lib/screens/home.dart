@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
 import 'package:provider/provider.dart';
@@ -6,19 +7,39 @@ import 'package:provider/provider.dart';
 import '../models/contact.dart';
 
 class ContactList extends StatefulWidget {
-  const ContactList({ Key? key }) : super(key: key);
+  ContactList({ Key? key }) : super(key: key);
+  MaterialAccentColor headerColor = headerColorGlobal.headerColor;
 
   @override
   _ContactListState createState() => _ContactListState();
 }
 
 class _ContactListState extends State<ContactList> {
-
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    
+    
+
+    return Consumer<HeaderColor>(builder: (c, color, child) {
+      setState(() {
+        widget.headerColor = color.headerColor;
+      });
+       return Scaffold(
       appBar: AppBar(
         title: const Text('ft_hangout'),
+        backgroundColor: widget.headerColor,
+        actions: [
+          PopupMenuButton(
+            onSelected: (int value) => headerColorGlobal.updateColor(value),
+            itemBuilder: (context) => [
+              const PopupMenuItem(child: Text('Red'), value: 1),
+              const PopupMenuItem(child: Text('Blue'), value: 2,),
+              const PopupMenuItem(child: Text('Yellow'), value: 3,),
+              const PopupMenuItem(child: Text('Green'), value: 4,)
+            ]
+            )
+        ],
       ),
       body: Consumer<ContactListModel>(
         builder: (context, list, child) {
@@ -35,6 +56,7 @@ class _ContactListState extends State<ContactList> {
         child: const Icon(Icons.person_add),
       ),
     );
+    });
   }
 
   Widget _buildList(ContactListModel list) {
