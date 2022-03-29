@@ -19,7 +19,6 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print('STATE CHANGED : $state');
     if (state == AppLifecycleState.inactive) {
       setState(() {
         widget.dateInactive = DateTime.now();
