@@ -9,12 +9,45 @@ import '../models/contact.dart';
 class ContactList extends StatefulWidget {
   ContactList({ Key? key }) : super(key: key);
   MaterialAccentColor headerColor = headerColorGlobal.headerColor;
+  DateTime? dateInactive;
 
   @override
   _ContactListState createState() => _ContactListState();
 }
 
-class _ContactListState extends State<ContactList> {
+class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('STATE CHANGED : $state');
+    if (state == AppLifecycleState.inactive) {
+      setState(() {
+        widget.dateInactive = DateTime.now();
+      });
+    } else if (state == AppLifecycleState.resumed && widget.dateInactive != null) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('App set in background at : ${widget.dateInactive!.hour}:${widget.dateInactive!.minute}:${widget.dateInactive!.second}'),
+        )
+      );
+      setState(() {
+        widget.dateInactive = null;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+   super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
