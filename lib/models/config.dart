@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HeaderColor extends ChangeNotifier {
   MaterialAccentColor _headerColor = Colors.blueAccent;
@@ -25,3 +26,4 @@ class HeaderColor extends ChangeNotifier {
 }
 
 HeaderColor headerColorGlobal = HeaderColor();
+Database? database;

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/models/contact.dart';
 import 'package:telephony/telephony.dart';

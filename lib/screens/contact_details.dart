@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ft_hangout/database.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
@@ -7,41 +8,62 @@ import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
 
-class ContactDetails extends StatelessWidget {
-  final Contact contact;
-  const ContactDetails(this.contact, { Key? key }) : super(key: key);
+class ContactDetails extends StatefulWidget {
+  Contact contact;
+  ContactDetails(this.contact, { Key? key }) : super(key: key);
 
+  @override
+  State<ContactDetails> createState() => _ContactDetailsState();
+}
+
+class _ContactDetailsState extends State<ContactDetails> {
+  // final bloc = ContactsBloc();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(contact.name),
+        title: Text(widget.contact.name),
         backgroundColor: headerColorGlobal.headerColor,
       ),
-      body: Consumer<ContactListModel>(
-        builder: (context, list, child) => _buildContactDetails(context, list),
+      body: FutureBuilder<List<Contact>>(
+        future: DBProvider.db.getContacts(),//bloc.contacts,
+        builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
+          if (snapshot.hasData) {
+            return _buildContactDetails(context, snapshot.data!);
+          } else {
+            return const Center(child: CircularProgressIndicator(),);
+          }
+        },
       )
+      // Consumer<ContactListModel>(
+      //   builder: (context, list, child) {
+      //     return _buildContactDetails(context, list);
+      //   },
+      // )
     );
   }
 
-  Widget _buildContactDetails(context, ContactListModel list) {
+  Widget _buildContactDetails(context, List<Contact> list) {
+    widget.contact = list.firstWhere((element) => element.id == widget.contact.id);
+
     return Container( 
       padding: const EdgeInsets.all(10),
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildHeader(),
-        _buildActionButtons(context, list, contact),
+        _buildActionButtons(context, list, widget.contact),
         const SizedBox(height: 10,),
-        _buildCard('Phone', contact.phonenumber)
+        _buildCard('Phone', widget.contact.phonenumber)
       ],
     ));
   }
 
   Widget _buildHeader() {
-    String completeName = contact.name;
-    if (contact.lastname != null) {
-      completeName += ' ' + contact.lastname!;
+    String completeName = widget.contact.name;
+    if (widget.contact.lastname != null) {
+      completeName += ' ' + widget.contact.lastname!;
     }
     return Center(
       child: Column(
@@ -57,8 +79,8 @@ class ContactDetails extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           const SizedBox(height: 8), 
-          if (contact.email != null) Text(
-            contact.email!,
+          if (widget.contact.email != null) Text(
+            widget.contact.email!,
             style: const TextStyle(color: Colors.grey, fontStyle: FontStyle.italic, fontSize: 14),
           )
         ],
@@ -66,7 +88,7 @@ class ContactDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(context, ContactListModel list, Contact currentContact) {
+  Widget _buildActionButtons(context, List<Contact> list, Contact currentContact) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
@@ -101,7 +123,9 @@ class ContactDetails extends StatelessWidget {
                       )
                     ),
                     onPressed: () {
-                      list.remove(currentContact);
+                      // list.remove(currentContact);
+                      DBProvider.db.deleteContact(currentContact.id);
+                      // bloc.remove(currentContact.id);
                       Navigator.of(context).pop('Remove');
                       Navigator.of(context).pop();
                     }, 

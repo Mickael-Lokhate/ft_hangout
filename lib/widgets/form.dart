@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ft_hangout/database.dart';
 
 import '../models/contact.dart';
 
@@ -28,6 +29,7 @@ class _ContactFormState extends State<ContactForm> {
   final phoneNumberController = TextEditingController();
   final emailController = TextEditingController();
   final moreInfoController = TextEditingController();
+  final bloc = ContactsBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,14 @@ class _ContactFormState extends State<ContactForm> {
     emailController.dispose();
     phoneNumberController.dispose();
     moreInfoController.dispose();
+    // bloc.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // bloc.getContacts();
   }
 
   Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller) {
@@ -118,15 +127,30 @@ class _ContactFormState extends State<ContactForm> {
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate() && widget.contact != null) {
-          widget.list.updateContact(
-            widget.contact!.id,
-            nameController.text,
-            lastnameController.text,
-            phoneNumberController.text,
-            emailController.text,
-            null,
-            moreInfoController.text
-          );
+          // widget.list.update(
+          //   widget.contact!.id,
+          //   nameController.text,
+          //   lastnameController.text,
+          //   phoneNumberController.text,
+          //   emailController.text,
+          //   null,
+          //   moreInfoController.text
+          // );
+          Contact newContact = widget.contact!;
+          if (nameController.text.isNotEmpty) {
+            newContact.name = nameController.text;
+          }
+          if (phoneNumberController.text.isNotEmpty) {
+            newContact.phonenumber = phoneNumberController.text;
+          }
+          newContact.lastname = lastnameController.text;
+          newContact.email = emailController.text;
+          newContact.moreInfos = moreInfoController.text;
+
+          // UPDATE IN DB
+          // DBProvider.db.updateContact(newContact);
+          // getContacts();
+          bloc.update(newContact);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Contact has been updated'),
@@ -143,7 +167,9 @@ class _ContactFormState extends State<ContactForm> {
             emailController.text,
             null,
             moreInfoController.text);
-          widget.list.add(newContact);
+          // DBProvider.db.insertContact(newContact);
+          bloc.add(newContact);
+          // widget.list.add(newContact);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Contact succefully created'),

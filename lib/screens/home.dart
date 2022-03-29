@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ft_hangout/database.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
@@ -17,6 +18,7 @@ class ContactList extends StatefulWidget {
 
 class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
 
+  final bloc = ContactsBloc();
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.inactive) {
@@ -45,11 +47,13 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
+    // bloc.dispose();
    super.dispose();
   }
   
   @override
   Widget build(BuildContext context) {
+    // getContacts();
     return Scaffold(
       appBar: AppBar(
         title: const Text('ft_hangout'),
@@ -87,9 +91,15 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
             )
         ],
       ),
-      body: Consumer<ContactListModel>(
-        builder: (context, list, child) {
-          return _buildList(list);
+      body: StreamBuilder<List<Contact>>(
+        stream: bloc.contacts,
+        builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
+          if (snapshot.hasData) {
+            print('LAST CONTACT: ${snapshot.data![snapshot.data!.length - 1].name}');
+            return _buildList(snapshot.data!);
+          } else {
+            return const Center(child: CircularProgressIndicator(),);
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -104,13 +114,13 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
     );
   }
 
-  Widget _buildList(ContactListModel list) {
-    if (list.contacts.isNotEmpty) {
+  Widget _buildList(List<Contact> list) {
+    if (list.isNotEmpty) {
       return ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: list.contacts.length,
+        itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
-          return _buildRowContact(list, list.contacts[index]);
+          return _buildRowContact(list, list[index]);
         },
       );
     } else {
@@ -118,7 +128,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
     }
   }
 
-  Widget _buildRowContact(ContactListModel list, Contact currentContact) {
+  Widget _buildRowContact(List<Contact> list, Contact currentContact) {
       return GestureDetector(
           child: Card(
             child: ListTile(
