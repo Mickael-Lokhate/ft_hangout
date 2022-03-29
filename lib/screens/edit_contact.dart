@@ -31,6 +31,6 @@ class _EditContactState extends State<EditContact> {
   }
 
   Widget _buildForm(ContactListModel list) {
-    return ContactForm(widget.contact, list);
+    return ContactForm(widget.contact);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ft_hangout/database.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
@@ -23,29 +22,19 @@ class _ContactDetailsState extends State<ContactDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.contact.name),
+        title: Consumer<ContactListModel>(
+        builder: (context, list, _) => Text(list.contacts.firstWhere((element) => element.id == widget.contact.id).name),
+      ),
         backgroundColor: headerColorGlobal.headerColor,
       ),
-      body: FutureBuilder<List<Contact>>(
-        future: DBProvider.db.getContacts(),//bloc.contacts,
-        builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
-          if (snapshot.hasData) {
-            return _buildContactDetails(context, snapshot.data!);
-          } else {
-            return const Center(child: CircularProgressIndicator(),);
-          }
-        },
+      body: Consumer<ContactListModel>(
+        builder: (context, list, _) => _buildContactDetails(context, list),
       )
-      // Consumer<ContactListModel>(
-      //   builder: (context, list, child) {
-      //     return _buildContactDetails(context, list);
-      //   },
-      // )
     );
   }
 
-  Widget _buildContactDetails(context, List<Contact> list) {
-    widget.contact = list.firstWhere((element) => element.id == widget.contact.id);
+  Widget _buildContactDetails(context, ContactListModel list) {
+    widget.contact = list.contacts.firstWhere((element) => element.id == widget.contact.id);
 
     return Container( 
       padding: const EdgeInsets.all(10),
@@ -88,7 +77,7 @@ class _ContactDetailsState extends State<ContactDetails> {
     );
   }
 
-  Widget _buildActionButtons(context, List<Contact> list, Contact currentContact) {
+  Widget _buildActionButtons(context, ContactListModel list, Contact currentContact) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
@@ -123,9 +112,7 @@ class _ContactDetailsState extends State<ContactDetails> {
                       )
                     ),
                     onPressed: () {
-                      // list.remove(currentContact);
-                      DBProvider.db.deleteContact(currentContact.id);
-                      // bloc.remove(currentContact.id);
+                      list.remove(currentContact.id);
                       Navigator.of(context).pop('Remove');
                       Navigator.of(context).pop();
                     }, 

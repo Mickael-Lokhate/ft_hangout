@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/database.dart';
+import 'package:ft_hangout/screens/home.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sql.dart';
 
@@ -34,101 +35,49 @@ class Contact {
 class ContactListModel with ChangeNotifier {
   List<Contact> _contacts = [];
 
+  ContactListModel() {
+    initContacts();
+  }
+
   UnmodifiableListView<Contact> get contacts => UnmodifiableListView(_contacts);
 
-  late List<Contact> allContacts;
-
-  void getContacts() async {
+  Future<List<Contact>> getContacts() async {
       _contacts = await DBProvider.db.getContacts();
+      return _contacts;
   }
 
-  // void initContacts() async {
-  //   print('CONTACT INIT');
-  //   final db = await database;
-  //   _contacts = await getContacts();
-  //   print('INIT FINISH : $_contacts');
-  //   notifyListeners();
-  // }
-
-  // void add(Contact contact) async {
-  //   // _contacts.add(contact);
-  //   insertContact(contact);
-  //   _contacts = await getContacts();
-  //   notifyListeners();
-  // }
-
-  // void update(int id, String? name, String? lastName, String? phoneNumber, String? email, String? imageUrl, String? moreInfos) async {
-  //   // Contact findContact = _contacts.firstWhere((contact) => contact.id == id);
-  //   Contact findContact = await getContact(id);
-  //   if (name != null && name.isNotEmpty) {
-  //     findContact.name = name;
-  //   }
-  //   if (phoneNumber != null && phoneNumber.isNotEmpty) {
-  //     findContact.phonenumber = phoneNumber;
-  //   }
-  //   findContact.lastname = lastName;
-  //   findContact.email = email;
-  //   findContact.imageUrl = imageUrl;
-  //   findContact.moreInfos = moreInfos;
-  //   updateContact(findContact);
-  //   _contacts = await getContacts();
-  //   notifyListeners();
-  // }
-
-  // void remove(Contact contact) async {
-  //   // _contacts.remove(contact);
-  //   deleteContact(contact.id);
-  //   _contacts = await getContacts();
-  //   notifyListeners();
-  // }
-
-  // void removeAll() {
-  //   _contacts.clear();
-  //   notifyListeners();
-  // }
-}
-
-// ContactListModel contactList = ContactListModel();
-
-class ContactsBloc {
-  ContactsBloc() {
-    getContacts();
+  void initContacts() async {
+    print('CONTACT INIT');
+    var contact = await getContacts();
+    print('INIT FINISH : $contact');
+    notifyListeners();
   }
 
-  final _contactController = StreamController<List<Contact>>();
-
-  Stream<List<Contact>> get contacts => _contactController.stream;
-
-  getContacts() async {
-    print('HEREEE');
-    if (!_contactController.isClosed) {
-      _contactController.sink.add(await DBProvider.db.getContacts());
-    }
-  }
-
-  Future<void> add(Contact contact) async {
-    print('ADDING CONTACT');
+  void add(Contact contact) async {
+    // _contacts.add(contact);
+    // insertContact(contact);
     await DBProvider.db.insertContact(contact);
     await getContacts();
-    print('CONTACT ADDED');
+    notifyListeners();
   }
 
   Future<void> update(Contact contact) async {
     await DBProvider.db.updateContact(contact);
     await getContacts();
+    notifyListeners();
   }
 
-  Future<void> remove(int id) async {
+   Future<void> remove(int id) async {
     await DBProvider.db.deleteContact(id);
     await getContacts();
+    notifyListeners();
   }
 
   Future<void> removeAll() async {
     await DBProvider.db.deleteAllContact();
     await getContacts();
-  }
-
-  dispose() {
-    // _contactController.close();
+    notifyListeners();
   }
 }
+
+ContactListModel contactList = ContactListModel();

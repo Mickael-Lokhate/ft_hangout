@@ -28,6 +28,6 @@ class _CreateContactState extends State<CreateContact> {
   }
 
   Widget _buildForm(ContactListModel list) {
-    return ContactForm(null, list);
+    return const ContactForm(null);
   }
 }
