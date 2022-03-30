@@ -1,11 +1,8 @@
-import 'package:ft_hangout/database.dart';
-import 'package:sqflite/sqflite.dart';
-
-import 'models/config.dart';
 import 'models/contact.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'screens/home.dart';
 
@@ -29,6 +26,15 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: ContactList(),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('fr'),
+        ],
       )
     );
   }
