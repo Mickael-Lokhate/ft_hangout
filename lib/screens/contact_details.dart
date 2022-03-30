@@ -3,14 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:telephony/telephony.dart';
 
 import '../models/contact.dart';
 
 class ContactDetails extends StatefulWidget {
   Contact contact;
   ContactDetails(this.contact, { Key? key }) : super(key: key);
+  final Telephony telephony = Telephony.instance;
 
   @override
   State<ContactDetails> createState() => _ContactDetailsState();
@@ -107,7 +110,12 @@ class _ContactDetailsState extends State<ContactDetails> {
             ); 
           }),
           const SizedBox(width: 5), 
-          _buildButton(AppLocalizations.of(context)!.callLabel, Icons.call, () {}),
+          _buildButton(AppLocalizations.of(context)!.callLabel, Icons.call, () async {
+            bool? permCall = await widget.telephony.requestPhonePermissions;
+            if (permCall != null && permCall) {
+              await widget.telephony.dialPhoneNumber(currentContact.phonenumber);
+            }
+          }),
           const SizedBox(width: 5), 
           _buildButton(AppLocalizations.of(context)!.editLabel, Icons.edit, () {
             Navigator.of(context).push(
