@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/widgets/messages_list.dart';
 import 'package:telephony/telephony.dart';
+import '../models/config.dart';
 import '../models/contact.dart';
 
 class MessagesInterface extends StatefulWidget {
@@ -26,6 +27,7 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
     return Scaffold(
       appBar: AppBar(
         title: Text(completeName),
+        backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Column(
         children: [

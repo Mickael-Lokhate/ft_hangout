@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ft_hangout/database.dart';
+import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
 
@@ -14,8 +16,7 @@ enum FieldType {
 
 class ContactForm extends StatefulWidget {
   final Contact? contact;
-  final ContactListModel list;
-  const ContactForm(this.contact, this.list, { Key? key }) : super(key: key);
+  const ContactForm(this.contact, { Key? key }) : super(key: key);
 
   @override
   _ContactFormState createState() => _ContactFormState();
@@ -42,16 +43,18 @@ class _ContactFormState extends State<ContactForm> {
   
     return Form(
       key: _formKey,
-      child: Column(
+      child: Consumer<ContactListModel>(
+        builder: (context, list, _) => Column(
         children: <Widget>[
           _buildTextField(FieldType.name, "Enter a name (*)",TextInputType.name, nameController),
           _buildTextField(FieldType.lastname,"Enter a lastname", TextInputType.text, lastnameController),
           _buildTextField(FieldType.phonenumber,"Enter a phone number (*)", TextInputType.phone, phoneNumberController),
           _buildTextField( FieldType.email,"Enter an email", TextInputType.emailAddress, emailController),
           _buildTextField(FieldType.moreInfos,"Enter more details", TextInputType.text, moreInfoController),
-          _buildValidationButton()
+          _buildValidationButton(list)
         ],
       )
+      ),
     );
   }
 
@@ -62,7 +65,14 @@ class _ContactFormState extends State<ContactForm> {
     emailController.dispose();
     phoneNumberController.dispose();
     moreInfoController.dispose();
+    // bloc.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // bloc.getContacts();
   }
 
   Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller) {
@@ -114,19 +124,23 @@ class _ContactFormState extends State<ContactForm> {
     );
   }
 
-  Widget _buildValidationButton() {
+  Widget _buildValidationButton(ContactListModel list) {
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate() && widget.contact != null) {
-          widget.list.updateContact(
-            widget.contact!.id,
-            nameController.text,
-            lastnameController.text,
-            phoneNumberController.text,
-            emailController.text,
-            null,
-            moreInfoController.text
-          );
+          Contact newContact = widget.contact!;
+          if (nameController.text.isNotEmpty) {
+            newContact.name = nameController.text;
+          }
+          if (phoneNumberController.text.isNotEmpty) {
+            newContact.phonenumber = phoneNumberController.text;
+          }
+          newContact.lastname = lastnameController.text;
+          newContact.email = emailController.text;
+          newContact.moreInfos = moreInfoController.text;
+
+          // UPDATE IN DB
+          list.update(newContact);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Contact has been updated'),
@@ -136,14 +150,16 @@ class _ContactFormState extends State<ContactForm> {
           Navigator.of(context).pop();
         } else if (_formKey.currentState!.validate() && widget.contact == null) {
           Contact newContact = Contact(
-            widget.list.contacts.length - 1,
+            0,
             nameController.text,
             phoneNumberController.text,
             lastnameController.text,
             emailController.text,
             null,
             moreInfoController.text);
-          widget.list.add(newContact);
+          
+          list.add(newContact);
+          
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Contact succefully created'),

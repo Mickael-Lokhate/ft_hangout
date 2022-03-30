@@ -1,11 +1,15 @@
-import 'models/contact.dart';
+import 'package:ft_hangout/database.dart';
+import 'package:sqflite/sqflite.dart';
 
+import 'models/config.dart';
+import 'models/contact.dart';
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -14,6 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    contactList.initContacts();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ContactListModel())
@@ -23,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const ContactList(),
+        home: ContactList(),
       )
     );
   }
