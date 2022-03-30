@@ -1,13 +1,11 @@
-import 'package:ft_hangout/database.dart';
-import 'package:sqflite/sqflite.dart';
-
-import 'models/config.dart';
-import 'models/contact.dart';
-import 'package:path/path.dart' as path;
+import 'package:ft_hangout/models/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'screens/home.dart';
+import 'package:ft_hangout/screens/home.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -24,11 +22,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ContactListModel())
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'ft_hangout',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: ContactList(),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('fr', ''),
+        ],
       )
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:ft_hangout/database.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
@@ -46,11 +45,11 @@ class _ContactFormState extends State<ContactForm> {
       child: Consumer<ContactListModel>(
         builder: (context, list, _) => Column(
         children: <Widget>[
-          _buildTextField(FieldType.name, "Enter a name (*)",TextInputType.name, nameController),
-          _buildTextField(FieldType.lastname,"Enter a lastname", TextInputType.text, lastnameController),
-          _buildTextField(FieldType.phonenumber,"Enter a phone number (*)", TextInputType.phone, phoneNumberController),
-          _buildTextField( FieldType.email,"Enter an email", TextInputType.emailAddress, emailController),
-          _buildTextField(FieldType.moreInfos,"Enter more details", TextInputType.text, moreInfoController),
+          _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
+          _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),
+          _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController, list),
+          _buildTextField( FieldType.email,AppLocalizations.of(context)!.emailFieldLabel, TextInputType.emailAddress, emailController, list),
+          _buildTextField(FieldType.moreInfos, AppLocalizations.of(context)!.moreFieldLabel, TextInputType.text, moreInfoController, list),
           _buildValidationButton(list)
         ],
       )
@@ -75,7 +74,7 @@ class _ContactFormState extends State<ContactForm> {
     // bloc.getContacts();
   }
 
-  Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller) {
+  Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller, ContactListModel list) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -87,32 +86,35 @@ class _ContactFormState extends State<ContactForm> {
         switch (type) {
           case FieldType.name:
             if (value == null || value.isEmpty) {
-             return "Please enter a name";
+             return AppLocalizations.of(context)!.errorName;
             }
           break;
           case FieldType.lastname:
           break;
           case FieldType.email:
             if (value != null && value.isNotEmpty) {
-              RegExp reg = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+              RegExp reg = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
               if (!reg.hasMatch(value)) {
-                return 'Please enter a valid email address';
+                return AppLocalizations.of(context)!.errorEmail;
               }
             }
           break;
           case FieldType.phonenumber:
             if (value == null || value.isEmpty) {
-             return "Please enter a phone number";
-            } else {
+             return AppLocalizations.of(context)!.errorNoPhone;
+            } else if (list.isPhoneExist(value)) {
+              return AppLocalizations.of(context)!.errorPhoneExist;
+            } 
+            else {
               RegExp reg = RegExp(r"^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$");
               if (!reg.hasMatch(value)) {
-                return 'Please enter a valide french phone number';
+                return AppLocalizations.of(context)!.errorPhone;
               }
             }
           break;
           case FieldType.imageUrl:
             if (value == null || value.isEmpty) {
-             return "Please enter a name";
+             return AppLocalizations.of(context)!.errorImage;
             }
           break;
           case FieldType.moreInfos:
@@ -142,8 +144,8 @@ class _ContactFormState extends State<ContactForm> {
           // UPDATE IN DB
           list.update(newContact);
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Contact has been updated'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.contactUpdateValid),
               backgroundColor: Colors.greenAccent,
               )
           );
@@ -161,15 +163,15 @@ class _ContactFormState extends State<ContactForm> {
           list.add(newContact);
           
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Contact succefully created'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.contactCreateValid),
               backgroundColor: Colors.greenAccent,
             )
           );
           Navigator.of(context).pop();
         }
       },
-      child: widget.contact != null ? const Text( 'Save') : const Text('Create')
+      child: widget.contact != null ? Text(AppLocalizations.of(context)!.saveButton) : Text(AppLocalizations.of(context)!.createButton)
     );
   }
 }

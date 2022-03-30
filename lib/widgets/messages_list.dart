@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ft_hangout/models/contact.dart';
 import 'package:telephony/telephony.dart';
 import 'message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MessagesListWidget extends StatefulWidget {
   MessagesListWidget(this.currentContact, { Key? key }) : super(key: key);
@@ -27,8 +28,8 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
         )
       );
     } else {
-      return const Center(
-        child: Text('No messages yet.'),
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noMessages),
       );
     }
   }

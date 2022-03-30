@@ -4,6 +4,7 @@ import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/contact.dart';
 
@@ -23,30 +24,47 @@ class _ContactDetailsState extends State<ContactDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<ContactListModel>(
-        builder: (context, list, _) => Text(list.contacts.firstWhere((element) => element.id == widget.contact.id).name),
+        builder: (context, list, _) { 
+          if (list.contacts.isEmpty) {
+            Navigator.of(context).pop();
+          }
+          Contact contact = list.contacts.firstWhere((element) => element.id == widget.contact.id, orElse: () => Contact(-1, '', ''));
+          return Text(contact.name);
+        },
       ),
         backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Consumer<ContactListModel>(
-        builder: (context, list, _) => _buildContactDetails(context, list),
+        builder: (context, list, _) {
+          if (list.contacts.isEmpty) {
+            Navigator.of(context).pop();
+          }
+           return _buildContactDetails(context, list);
+        },
       )
     );
   }
 
   Widget _buildContactDetails(context, ContactListModel list) {
-    widget.contact = list.contacts.firstWhere((element) => element.id == widget.contact.id);
+    if (list.contacts.isEmpty) {
+      Navigator.of(context).pop();
+    }
+    widget.contact = list.contacts.firstWhere((element) => element.id == widget.contact.id, orElse: () => Contact(-1, '', ''));
 
     return Container( 
       padding: const EdgeInsets.all(10),
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildHeader(),
-        _buildActionButtons(context, list, widget.contact),
-        const SizedBox(height: 10,),
-        _buildCard('Phone', widget.contact.phonenumber)
-      ],
-    ));
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildHeader(),
+            _buildActionButtons(context, list, widget.contact),
+            const SizedBox(height: 10,),
+            _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber)
+          ],
+        ),
+      )
+    );
   }
 
   Widget _buildHeader() {
@@ -81,59 +99,25 @@ class _ContactDetailsState extends State<ContactDetails> {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildButton('Message', Icons.message, () {
            Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MessagesInterface(currentContact))
             ); 
           }),
-          const SizedBox(width: 8), 
-          _buildButton('Call', Icons.call, () {}),
-          const SizedBox(width: 8), 
-          _buildButton('Edit', Icons.edit, () {
+          const SizedBox(width: 5), 
+          _buildButton(AppLocalizations.of(context)!.callLabel, Icons.call, () {}),
+          const SizedBox(width: 5), 
+          _buildButton(AppLocalizations.of(context)!.editLabel, Icons.edit, () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => EditContact(currentContact))
             );
           }),
-          const SizedBox(width: 8), 
-          _buildButton('Delete', Icons.delete, () {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: Text('Delete ${currentContact.name}'),
-                content: Text('Do you really want to delete ${currentContact.name} ?'),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.redAccent,
-                      textStyle: const TextStyle(
-                          fontSize: 16.0,
-                      )
-                    ),
-                    onPressed: () {
-                      list.remove(currentContact.id);
-                      Navigator.of(context).pop('Remove');
-                      Navigator.of(context).pop();
-                    }, 
-                    child: Text("Good bye ${currentContact.name}")
-                  ),
-                   TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      )
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop('Cancel');
-                    }, 
-                    child: const Text("Cancel")
-                  )
-                ],
-              )
-            );
-            
+          const SizedBox(width: 5), 
+          _buildButton(AppLocalizations.of(context)!.deleteLabel, Icons.delete, () {
+            Navigator.of(context).pop();
+            list.remove(currentContact.id);
           }),
         ],
       )
@@ -141,17 +125,19 @@ class _ContactDetailsState extends State<ContactDetails> {
   }
 
   Widget _buildButton(String name, IconData icon, void Function() action) {
-    return ElevatedButton(
+    return Flexible(
+      child: ElevatedButton(
       onPressed: action,
       child: Container(
-      padding: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Column(
         children: [
           Icon(icon),
-          Text(name)
+          Text(name, style: const TextStyle(fontSize: 12),)
         ],
       ),
       )
+    )
     );
   }
 

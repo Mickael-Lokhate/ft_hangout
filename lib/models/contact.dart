@@ -3,11 +3,6 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:ft_hangout/database.dart';
-import 'package:ft_hangout/screens/home.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sql.dart';
-
-import 'config.dart';
 
 class Contact {
   int       id;
@@ -47,15 +42,11 @@ class ContactListModel with ChangeNotifier {
   }
 
   void initContacts() async {
-    print('CONTACT INIT');
-    var contact = await getContacts();
-    print('INIT FINISH : $contact');
+    _contacts = await getContacts();
     notifyListeners();
   }
 
   void add(Contact contact) async {
-    // _contacts.add(contact);
-    // insertContact(contact);
     await DBProvider.db.insertContact(contact);
     await getContacts();
     notifyListeners();
@@ -77,6 +68,14 @@ class ContactListModel with ChangeNotifier {
     await DBProvider.db.deleteAllContact();
     await getContacts();
     notifyListeners();
+  }
+
+  bool isPhoneExist(String phone) {
+    Contact contact = _contacts.singleWhere((element) => element.phonenumber == phone, orElse: () => Contact(-1, '', ''));
+    if (contact.id == -1) {
+      return false;
+    }
+    return true;
   }
 }
 
