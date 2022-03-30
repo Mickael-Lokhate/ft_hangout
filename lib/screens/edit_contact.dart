@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ft_hangout/models/contact.dart';
 import 'package:ft_hangout/widgets/form.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/config.dart';
 
@@ -18,7 +19,7 @@ class _EditContactState extends State<EditContact> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit ' + widget.contact.name),
+        title: Text('${AppLocalizations.of(context)!.editLabel} ' + widget.contact.name),
         backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Consumer<ContactListModel>(

@@ -3,6 +3,7 @@ import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/contact.dart';
 
@@ -27,7 +28,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('App set in background at : ${widget.dateInactive!.hour}:${widget.dateInactive!.minute}:${widget.dateInactive!.second}'),
+          content: Text('${AppLocalizations.of(context)!.backgroundMessage} : ${widget.dateInactive!.hour}:${widget.dateInactive!.minute}:${widget.dateInactive!.second}'),
         )
       );
       setState(() {
@@ -79,10 +80,10 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
               });
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(child: Text('Red'), value: 1),
-              const PopupMenuItem(child: Text('Blue'), value: 2,),
-              const PopupMenuItem(child: Text('Yellow'), value: 3,),
-              const PopupMenuItem(child: Text('Green'), value: 4,)
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.redLabel), value: 1),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.blueLabel), value: 2,),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.yellowLabel), value: 3,),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.greenLabel), value: 4,)
             ]
             )
         ],
@@ -112,7 +113,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
         },
       );
     } else {
-      return const Center(child: Text('Add your first contact with the + button'),);
+      return Center(child: Text(AppLocalizations.of(context)!.noContactLabel),);
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:ft_hangout/widgets/messages_list.dart';
 import 'package:telephony/telephony.dart';
 import '../models/config.dart';
 import '../models/contact.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MessagesInterface extends StatefulWidget {
   MessagesInterface(this.currentContact, { Key? key }) : super(key: key);
@@ -56,13 +57,13 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
   Widget _buildMessageInput() {
     return TextFormField(
       controller: messageController,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Type a Message'
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        hintText: AppLocalizations.of(context)!.messageFieldHint
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "Enter a message first";
+          return AppLocalizations.of(context)!.errorMessage;
         }
         return null;
       },
