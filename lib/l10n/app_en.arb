@@ -25,6 +25,7 @@
 	"errorEmail": "Please enter a valid email address",
 	"errorPhone": "Please enter a valid french phone number",
 	"errorNoPhone": "Please enter a phone number",
+	"errorPhoneExist": "Phone already in your contact list",
 	"errorImage": "Please upload a valid image",
 	"contactUpdateValid": "Contact has been updated",
 	"contactCreateValid": "Contact successfully created",

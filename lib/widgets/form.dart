@@ -45,11 +45,11 @@ class _ContactFormState extends State<ContactForm> {
       child: Consumer<ContactListModel>(
         builder: (context, list, _) => Column(
         children: <Widget>[
-          _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController),
-          _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController),
-          _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController),
-          _buildTextField( FieldType.email,AppLocalizations.of(context)!.emailFieldLabel, TextInputType.emailAddress, emailController),
-          _buildTextField(FieldType.moreInfos, AppLocalizations.of(context)!.moreFieldLabel, TextInputType.text, moreInfoController),
+          _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
+          _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),
+          _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController, list),
+          _buildTextField( FieldType.email,AppLocalizations.of(context)!.emailFieldLabel, TextInputType.emailAddress, emailController, list),
+          _buildTextField(FieldType.moreInfos, AppLocalizations.of(context)!.moreFieldLabel, TextInputType.text, moreInfoController, list),
           _buildValidationButton(list)
         ],
       )
@@ -74,7 +74,7 @@ class _ContactFormState extends State<ContactForm> {
     // bloc.getContacts();
   }
 
-  Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller) {
+  Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller, ContactListModel list) {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -102,7 +102,10 @@ class _ContactFormState extends State<ContactForm> {
           case FieldType.phonenumber:
             if (value == null || value.isEmpty) {
              return AppLocalizations.of(context)!.errorNoPhone;
-            } else {
+            } else if (list.isPhoneExist(value)) {
+              return AppLocalizations.of(context)!.errorPhoneExist;
+            } 
+            else {
               RegExp reg = RegExp(r"^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$");
               if (!reg.hasMatch(value)) {
                 return AppLocalizations.of(context)!.errorPhone;

@@ -24,6 +24,7 @@
 	"errorName": "Le nom est obligatoire",
 	"errorEmail": "Une address mail valide est nécessaire",
 	"errorPhone": "Un numéro de téléphone français valide est nécessaire",
+	"errorPhoneExist": "Ce numéro est déjà dans vos contacts",
 	"errorImage": "Une image valide est nécessaire",
 	"contactUpdateValid": "Contact modifié",
 	"contactCreateValid": "Contact créé avec succès",
