@@ -30,11 +30,14 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
         title: Text(completeName),
         backgroundColor: headerColorGlobal.headerColor,
       ),
-      body: Column(
-        children: [
-          MessagesListWidget(widget.currentContact),
-          _buildForm(),
-        ],
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Column(
+          children: [
+            MessagesListWidget(widget.currentContact),
+            _buildForm(),
+          ],
+        ),
       )
     );
   }

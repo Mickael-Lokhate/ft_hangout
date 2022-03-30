@@ -20,11 +20,14 @@ class _CreateContactState extends State<CreateContact> {
         title: Text(AppLocalizations.of(context)!.createContactLabel),
         backgroundColor: headerColorGlobal.headerColor,
       ),
-      body: Consumer<ContactListModel>(
-        builder: (context, list, child) {
-          return _buildForm(list);
-        }
-      ),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Consumer<ContactListModel>(
+          builder: (context, list, child) {
+            return _buildForm(list);
+          }
+        ),
+      )
     );
   }
 

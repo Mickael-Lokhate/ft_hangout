@@ -22,12 +22,14 @@ class _EditContactState extends State<EditContact> {
         title: Text('${AppLocalizations.of(context)!.editLabel} ' + widget.contact.name),
         backgroundColor: headerColorGlobal.headerColor,
       ),
-      body: Consumer<ContactListModel>(
-        builder: (context, list, child) {
-          return _buildForm(list);
-        },
-      )
-       
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Consumer<ContactListModel>(
+          builder: (context, list, child) {
+            return _buildForm(list);
+          },
+        ),
+      )       
     );
   }
 
