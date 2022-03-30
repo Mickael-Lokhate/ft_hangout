@@ -95,7 +95,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
         builder: (context, list, _) { 
           telephony.listenIncomingSms(
           onNewMessage: (SmsMessage message) {
-            if (!contactList.isPhoneExist(message.address!, -2)) {
+            if (!list.isPhoneExist(message.address!, -2)) {
               Contact newContact = Contact(
                 0,
                 message.address!,

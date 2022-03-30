@@ -71,6 +71,7 @@ class ContactListModel with ChangeNotifier {
   }
 
   bool isPhoneExist(String phone, int currentId) {
+    getContacts();
     Contact contact = _contacts.singleWhere((element) => element.phonenumber == phone, orElse: () => Contact(-1, '', ''));
     if (contact.id == -1 || contact.id == currentId) {
       return false;
