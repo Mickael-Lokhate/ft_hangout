@@ -6,13 +6,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:ft_hangout/screens/home.dart';
+import 'package:telephony/telephony.dart';
 
 void main() async {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+ const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

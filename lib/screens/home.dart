@@ -4,6 +4,7 @@ import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:telephony/telephony.dart';
 
 import '../models/contact.dart';
 
@@ -17,6 +18,7 @@ class ContactList extends StatefulWidget {
 }
 
 class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
+  final Telephony telephony = Telephony.instance;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -40,6 +42,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    
     WidgetsBinding.instance?.addObserver(this);
   }
 
@@ -89,7 +92,22 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
         ],
       ),
       body: Consumer<ContactListModel>(
-        builder: (context, list, _) => _buildList(list) ,
+        builder: (context, list, _) { 
+          telephony.listenIncomingSms(
+          onNewMessage: (SmsMessage message) {
+            if (!contactList.isPhoneExist(message.address!)) {
+              Contact newContact = Contact(
+                0,
+                message.address!,
+                message.address!,
+              );
+              list.add(newContact);
+            }
+          },
+          listenInBackground: false
+        );
+          return _buildList(list);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
