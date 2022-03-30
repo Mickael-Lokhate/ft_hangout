@@ -95,13 +95,18 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
         builder: (context, list, _) { 
           telephony.listenIncomingSms(
           onNewMessage: (SmsMessage message) {
-            if (!contactList.isPhoneExist(message.address!)) {
+            if (!contactList.isPhoneExist(message.address!, -2)) {
               Contact newContact = Contact(
                 0,
                 message.address!,
                 message.address!,
               );
               list.add(newContact);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${AppLocalizations.of(context)!.newMessage} ${message.address}'),
+                )
+              );
             }
           },
           listenInBackground: false

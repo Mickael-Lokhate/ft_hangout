@@ -50,14 +50,14 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
       ).then((valueSent) {
           tmp += valueSent;
           tmp.sort((m1, m2) {
-            DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.dateSent! * 1000);
-            DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.dateSent! * 1000);
+            DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.dateSent! * 1000, isUtc: false).toLocal();
+            DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.dateSent! * 1000, isUtc: false).toLocal();
 
             if (m1.type == SmsType.MESSAGE_TYPE_SENT) {
-              m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000); 
+              m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000, isUtc: false).toLocal(); 
             }
             if (m2.type == SmsType.MESSAGE_TYPE_SENT) {
-              m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000); 
+              m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000, isUtc: false).toLocal(); 
             }
             return m2Date.compareTo(m1Date);
           });

@@ -100,9 +100,13 @@ class _ContactFormState extends State<ContactForm> {
             }
           break;
           case FieldType.phonenumber:
+            int id = -2;
+            if (widget.contact != null) {
+              id = widget.contact!.id;
+            }
             if (value == null || value.isEmpty) {
              return AppLocalizations.of(context)!.errorNoPhone;
-            } else if (list.isPhoneExist(value)) {
+            } else if (list.isPhoneExist(value, id)) {
               return AppLocalizations.of(context)!.errorPhoneExist;
             } 
             else {

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:telephony/telephony.dart';
@@ -63,7 +62,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             _buildHeader(),
             _buildActionButtons(context, list, widget.contact),
             const SizedBox(height: 10,),
-            _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber)
+            _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber),
+            _buildCard(AppLocalizations.of(context)!.moreLabel, widget.contact.moreInfos ?? ''),
           ],
         ),
       )
@@ -157,7 +157,7 @@ class _ContactDetailsState extends State<ContactDetails> {
       child: Tooltip(
         triggerMode: TooltipTriggerMode.tap,
         showDuration: const Duration(milliseconds: 1500),
-        message: leading + ' copied !',
+        message: leading + ' ' + AppLocalizations.of(context)!.copyTooltip + ' !',
         child:Card(
           child: ListTile(
             leading: Container(

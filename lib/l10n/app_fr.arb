@@ -31,5 +31,7 @@
 	"contactCreateValid": "Contact créé avec succès",
 	"saveButton": "Enregistrer",
 	"createButton": "Créer",
-	"noMessages": "Aucun messages pour le moment"
+	"noMessages": "Aucun messages pour le moment",
+	"moreLabel": "Plus de détails",
+	"newMessage": "Un nouveau contact à été créé : "
 }

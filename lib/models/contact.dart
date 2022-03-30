@@ -70,9 +70,9 @@ class ContactListModel with ChangeNotifier {
     notifyListeners();
   }
 
-  bool isPhoneExist(String phone) {
+  bool isPhoneExist(String phone, int currentId) {
     Contact contact = _contacts.singleWhere((element) => element.phonenumber == phone, orElse: () => Contact(-1, '', ''));
-    if (contact.id == -1) {
+    if (contact.id == -1 || contact.id == currentId) {
       return false;
     }
     return true;
