@@ -53,15 +53,18 @@ class _ContactDetailsState extends State<ContactDetails> {
 
     return Container( 
       padding: const EdgeInsets.all(10),
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildHeader(),
-        _buildActionButtons(context, list, widget.contact),
-        const SizedBox(height: 10,),
-        _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber)
-      ],
-    ));
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildHeader(),
+            _buildActionButtons(context, list, widget.contact),
+            const SizedBox(height: 10,),
+            _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber)
+          ],
+        ),
+      )
+    );
   }
 
   Widget _buildHeader() {

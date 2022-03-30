@@ -29,6 +29,8 @@ class _CreateContactState extends State<CreateContact> {
   }
 
   Widget _buildForm(ContactListModel list) {
-    return const ContactForm(null);
+    return const SingleChildScrollView(
+      child: ContactForm(null),
+    );
   }
 }
