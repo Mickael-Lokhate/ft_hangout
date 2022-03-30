@@ -93,7 +93,7 @@ class _ContactFormState extends State<ContactForm> {
           break;
           case FieldType.email:
             if (value != null && value.isNotEmpty) {
-              RegExp reg = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+              RegExp reg = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
               if (!reg.hasMatch(value)) {
                 return AppLocalizations.of(context)!.errorEmail;
               }
