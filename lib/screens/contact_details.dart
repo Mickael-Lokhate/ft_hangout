@@ -24,18 +24,32 @@ class _ContactDetailsState extends State<ContactDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<ContactListModel>(
-        builder: (context, list, _) => Text(list.contacts.firstWhere((element) => element.id == widget.contact.id).name),
+        builder: (context, list, _) { 
+          if (list.contacts.isEmpty) {
+            Navigator.of(context).pop();
+          }
+          Contact contact = list.contacts.firstWhere((element) => element.id == widget.contact.id, orElse: () => Contact(-1, '', ''));
+          return Text(contact.name);
+        },
       ),
         backgroundColor: headerColorGlobal.headerColor,
       ),
       body: Consumer<ContactListModel>(
-        builder: (context, list, _) => _buildContactDetails(context, list),
+        builder: (context, list, _) {
+          if (list.contacts.isEmpty) {
+            Navigator.of(context).pop();
+          }
+           return _buildContactDetails(context, list);
+        },
       )
     );
   }
 
   Widget _buildContactDetails(context, ContactListModel list) {
-    widget.contact = list.contacts.firstWhere((element) => element.id == widget.contact.id);
+    if (list.contacts.isEmpty) {
+      Navigator.of(context).pop();
+    }
+    widget.contact = list.contacts.firstWhere((element) => element.id == widget.contact.id, orElse: () => Contact(-1, '', ''));
 
     return Container( 
       padding: const EdgeInsets.all(10),
@@ -81,8 +95,7 @@ class _ContactDetailsState extends State<ContactDetails> {
   Widget _buildActionButtons(context, ContactListModel list, Contact currentContact) {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-      child: Flexible(
-        child: Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildButton('Message', Icons.message, () {
@@ -100,45 +113,10 @@ class _ContactDetailsState extends State<ContactDetails> {
           }),
           const SizedBox(width: 5), 
           _buildButton(AppLocalizations.of(context)!.deleteLabel, Icons.delete, () {
-            showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: Text('${AppLocalizations.of(context)!.deleteLabel} ${currentContact.name}'),
-                content: Text('${AppLocalizations.of(context)!.deleteConfirmText} ${currentContact.name} ?'),
-                actions: <Widget>[
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.redAccent,
-                      textStyle: const TextStyle(
-                          fontSize: 16.0,
-                      )
-                    ),
-                    onPressed: () {
-                      list.remove(currentContact.id);
-                      Navigator.of(context).pop('Remove');
-                      Navigator.of(context).pop();
-                    }, 
-                    child: Text("${AppLocalizations.of(context)!.deleteConfirmText} ${currentContact.name}")
-                  ),
-                   TextButton(
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      )
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop('Cancel');
-                    }, 
-                    child: Text(AppLocalizations.of(context)!.deleteCancelButton)
-                  )
-                ],
-              )
-            );
-            
+            Navigator.of(context).pop();
+            list.remove(currentContact.id);
           }),
         ],
-      )
       )
     );
   }
