@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ft_hangout/utility.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contact.dart';
@@ -32,6 +34,7 @@ class _ContactFormState extends State<ContactForm> {
   final moreInfoController = TextEditingController();
   final entrepriseController = TextEditingController();
   final addressController = TextEditingController();
+  String photoString = '';
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class _ContactFormState extends State<ContactForm> {
       child: Consumer<ContactListModel>(
         builder: (context, list, _) => Column(
         children: <Widget>[
+          _buildImage(list),
           _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
           _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),
           _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController, list),
@@ -80,6 +84,34 @@ class _ContactFormState extends State<ContactForm> {
   void initState() {
     super.initState();
     // bloc.getContacts();
+  }
+
+  Widget _buildAvatar() {
+    if (widget.contact != null && widget.contact!.imageUrl != null && widget.contact!.imageUrl!.isNotEmpty) {
+      return CircleAvatar(
+            radius: 64,
+            child: const Icon(Icons.person, size: 128,),
+            foregroundImage: Utility.imageFromBase64String(widget.contact!.imageUrl!).image,
+      );
+    } else {
+      return const CircleAvatar(
+            radius: 64,
+            child: Icon(Icons.person, size: 128,),
+      );
+    }
+  }
+
+  Widget _buildImage(ContactListModel list) {
+    return GestureDetector(
+      onTap: () {
+        ImagePicker().pickImage(source: ImageSource.gallery).then((imgFile) async {
+          if (imgFile != null) {
+            photoString = Utility.base64String(await imgFile.readAsBytes());
+          }
+        });
+      },
+      child: _buildAvatar(),
+    );
   }
 
   Widget _buildTextField(FieldType type, String label, TextInputType keyboardType, TextEditingController controller, ContactListModel list) {
@@ -124,11 +156,6 @@ class _ContactFormState extends State<ContactForm> {
               }
             }
           break;
-          case FieldType.imageUrl:
-            if (value == null || value.isEmpty) {
-             return AppLocalizations.of(context)!.errorImage;
-            }
-          break;
           default:
           break;
         }
@@ -153,6 +180,9 @@ class _ContactFormState extends State<ContactForm> {
           newContact.moreInfos = moreInfoController.text;
           newContact.entreprise = entrepriseController.text;
           newContact.address = addressController.text;
+          if (photoString.isNotEmpty){
+            newContact.imageUrl = photoString;
+          }
 
           // UPDATE IN DB
           list.update(newContact);
@@ -164,13 +194,17 @@ class _ContactFormState extends State<ContactForm> {
           );
           Navigator.of(context).pop();
         } else if (_formKey.currentState!.validate() && widget.contact == null) {
+          String? image;
+          if (photoString.isNotEmpty) {
+            image = photoString;
+          }
           Contact newContact = Contact(
             0,
             nameController.text,
             phoneNumberController.text,
             lastnameController.text,
             emailController.text,
-            null,
+            image,
             moreInfoController.text,
             entrepriseController.text,
             addressController.text);

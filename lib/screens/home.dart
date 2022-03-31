@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
+import 'package:ft_hangout/utility.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:telephony/telephony.dart';
@@ -127,6 +128,21 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
     }
   }
 
+  Widget _buildAvatar(Contact currentContact) {
+    if (currentContact.imageUrl != null && currentContact.imageUrl!.isNotEmpty) {
+      return CircleAvatar(
+            radius: 24,
+            child: const Icon(Icons.person, size: 48,),
+            foregroundImage: Utility.imageFromBase64String(currentContact.imageUrl!).image,
+      );
+    } else {
+      return const CircleAvatar(
+            radius: 24,
+            child: Icon(Icons.person, size: 48,),
+      );
+    }
+  }
+
   Widget _buildRowContact(List<Contact> list, Contact currentContact) {
       return GestureDetector(
           child: Card(
@@ -136,10 +152,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
                 height: 64,
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 alignment: Alignment.center,
-                child: const CircleAvatar(
-                  radius: 24,
-                  child: Icon(Icons.person, size: 48,),
-                ),
+                child: _buildAvatar(currentContact),
               ),
               title: Text(
                 currentContact.name,
