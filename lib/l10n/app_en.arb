@@ -41,5 +41,6 @@
 	"noMessages": "No messages yet",
 	"moreLabel": "More details",
 	"newMessage": "A new contact as been created : ",
-	"photoButton": "Take a picture"
+	"photoButton": "Take a picture",
+	"galleryHint": "Click on the avatar to choose from gallery"
 }
