@@ -91,6 +91,5 @@ class _MessagesInterfaceState extends State<MessagesInterface> {
   }
 
   void  _sendMessageListener(SendStatus status) {
-    print("STATUS OF MESSAGE : $status");
   }
 }
