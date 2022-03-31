@@ -62,33 +62,20 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
           PopupMenuButton(
             onSelected: (int value) {
               setState(() {
-                switch (value) {
-                  case 1:
-                    widget.headerColor = Colors.redAccent;
-                    headerColorGlobal.updateColor(value);
-                  break;
-                  case 2:
-                    widget.headerColor = Colors.blueAccent;
-                    headerColorGlobal.updateColor(value);
-                    break;
-                  case 3:
-                    widget.headerColor = Colors.yellowAccent;
-                    headerColorGlobal.updateColor(value);
-                    break;
-                  case 4:
-                    widget.headerColor = Colors.greenAccent;
-                    headerColorGlobal.updateColor(value);
-                    break;
-                }
-              });
+                widget.headerColor = headerColorGlobal.updateColor(value);
+              }
+              );
             },
             itemBuilder: (context) => [
               PopupMenuItem(child: Text(AppLocalizations.of(context)!.redLabel), value: 1),
               PopupMenuItem(child: Text(AppLocalizations.of(context)!.blueLabel), value: 2,),
               PopupMenuItem(child: Text(AppLocalizations.of(context)!.yellowLabel), value: 3,),
-              PopupMenuItem(child: Text(AppLocalizations.of(context)!.greenLabel), value: 4,)
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.greenLabel), value: 4,),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.orangeLabel), value: 5,),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.purpleLabel), value: 6,),
+              PopupMenuItem(child: Text(AppLocalizations.of(context)!.pinkLabel), value: 7,)
             ]
-            )
+           )
         ],
       ),
       body: Consumer<ContactListModel>(

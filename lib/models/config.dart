@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-class HeaderColor extends ChangeNotifier {
+class HeaderColor with ChangeNotifier {
   MaterialAccentColor _headerColor = Colors.blueAccent;
 
   get headerColor => _headerColor;
 
-  void updateColor(int colorId) {
+  MaterialAccentColor updateColor(int colorId) {
     switch (colorId) {
       case 1:
         _headerColor = Colors.redAccent;
@@ -20,8 +20,18 @@ class HeaderColor extends ChangeNotifier {
       case 4:
         _headerColor = Colors.greenAccent;
         break;
+      case 5:
+        _headerColor = Colors.deepOrangeAccent;
+        break;
+      case 6:
+        _headerColor = Colors.deepPurpleAccent;
+        break;
+      case 7:
+        _headerColor = Colors.pinkAccent;
+        break;
     }
     notifyListeners();
+    return _headerColor;
   }
 }
 
