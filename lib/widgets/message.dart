@@ -23,10 +23,7 @@ class MessageWidget extends StatelessWidget {
       textAlign = TextAlign.left;
     }
 
-    DateTime dateSent = DateTime.fromMicrosecondsSinceEpoch(message.dateSent! * 1000, isUtc: false).toLocal();
-    if (message.type == SmsType.MESSAGE_TYPE_SENT) {
-      dateSent = DateTime.fromMicrosecondsSinceEpoch(message.date! * 1000, isUtc: false).toLocal(); 
-    }
+    DateTime dateSent = DateTime.fromMicrosecondsSinceEpoch(message.date! * 1000, isUtc: false).toLocal(); 
 
     String stringDate = "${dateSent.day} ${_convertMonth(dateSent.month)} ${dateSent.hour.toString().padLeft(2, '0')}:${dateSent.minute.toString().padLeft(2, '0')}";   
     Icon icon = const Icon(Icons.check_circle_outline, size: 16,);

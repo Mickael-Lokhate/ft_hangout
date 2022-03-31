@@ -38,27 +38,21 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
      List<SmsMessage> tmp;
 
      tmp = await telephony.getInboxSms(
-        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE, SmsColumn.DATE_SENT, SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
+        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE, SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals(widget.currentContact.phonenumber),
         sortOrder: [OrderBy(SmsColumn.DATE_SENT)]
       );
 
       telephony.getSentSms(
-        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE_SENT, SmsColumn.DATE,SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
+        columns: [SmsColumn.TYPE, SmsColumn.ADDRESS, SmsColumn.BODY, SmsColumn.DATE, SmsColumn.SEEN, SmsColumn.READ, SmsColumn.THREAD_ID],
         filter: SmsFilter.where(SmsColumn.ADDRESS).equals(widget.currentContact.phonenumber),
         sortOrder: [OrderBy(SmsColumn.DATE)]
       ).then((valueSent) {
           tmp += valueSent;
           tmp.sort((m1, m2) {
-            DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.dateSent! * 1000, isUtc: false).toLocal();
-            DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.dateSent! * 1000, isUtc: false).toLocal();
+            DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000, isUtc: false).toLocal();
+            DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000, isUtc: false).toLocal();
 
-            if (m1.type == SmsType.MESSAGE_TYPE_SENT) {
-              m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000, isUtc: false).toLocal(); 
-            }
-            if (m2.type == SmsType.MESSAGE_TYPE_SENT) {
-              m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000, isUtc: false).toLocal(); 
-            }
             return m2Date.compareTo(m1Date);
           });
         setState(() {
