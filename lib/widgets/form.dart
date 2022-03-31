@@ -59,6 +59,8 @@ class _ContactFormState extends State<ContactForm> {
         children: <Widget>[
           const SizedBox(height: 10,),
           _buildImage(),
+          const SizedBox(height: 5),
+          const Center(child: Text('Click on the avatar to choose from gallery', style: TextStyle(fontSize: 12, color: Colors.grey, fontStyle: FontStyle.italic),),),
           _buildCameraButton(),
           _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
           _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),

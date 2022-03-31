@@ -22,19 +22,11 @@ class DBProvider {
     path.join(await getDatabasesPath(), 'contacts.db'),
     onCreate: (db, version) async {
       await db.execute(
-        'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phonenumber TEXT, lastname TEXT, email TEXT, imageUrl TEXT, moreInfos TEXT)'
+        'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phonenumber TEXT, lastname TEXT, email TEXT, imageUrl TEXT, moreInfos TEXT, entreprise TEXT, address TEXT)'
       );
     },
-    onUpgrade: _upgradeTables,
     version: 5
     );
-  }
-
-  _upgradeTables(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {
-      await db.execute('ALTER TABLE contacts ADD COLUMN entreprise TEXT');
-      await db.execute('ALTER TABLE contacts ADD COLUMN address TEXT');
-    }
   }
 
   insertContact(Contact newContact) async {
