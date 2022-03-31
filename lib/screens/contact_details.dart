@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/edit_contact.dart';
 import 'package:ft_hangout/screens/messages.dart';
+import 'package:ft_hangout/utility.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:telephony/telephony.dart';
@@ -63,6 +64,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             _buildActionButtons(context, list, widget.contact),
             const SizedBox(height: 10,),
             _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber),
+            _buildCard(AppLocalizations.of(context)!.entrepriseLabel, widget.contact.entreprise ?? ''),
+            _buildCard(AppLocalizations.of(context)!.addressLabel, widget.contact.address ?? ''),
             _buildCard(AppLocalizations.of(context)!.moreLabel, widget.contact.moreInfos ?? ''),
           ],
         ),
@@ -79,10 +82,7 @@ class _ContactDetailsState extends State<ContactDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
-            radius: 64,
-            child: Icon(Icons.person, size: 128,)
-            ,),
+          _buildAvatar(),
           const SizedBox(height: 8), 
           Text(
             completeName,
@@ -96,6 +96,21 @@ class _ContactDetailsState extends State<ContactDetails> {
         ],
       )
     );
+  }
+
+  Widget _buildAvatar() {
+    if (widget.contact.imageUrl != null && widget.contact.imageUrl!.isNotEmpty) {
+      return CircleAvatar(
+            radius: 64,
+            child: const Icon(Icons.person, size: 128,),
+            foregroundImage: Utility.imageFromBase64String(widget.contact.imageUrl!).image,
+      );
+    } else {
+      return const CircleAvatar(
+            radius: 64,
+            child: Icon(Icons.person, size: 128,),
+      );
+    }
   }
 
   Widget _buildActionButtons(context, ContactListModel list, Contact currentContact) {

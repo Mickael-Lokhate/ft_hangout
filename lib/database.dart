@@ -22,10 +22,10 @@ class DBProvider {
     path.join(await getDatabasesPath(), 'contacts.db'),
     onCreate: (db, version) async {
       await db.execute(
-        'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phonenumber TEXT, lastname TEXT, email TEXT, imageUrl TEXT, moreInfos TEXT)'
+        'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phonenumber TEXT, lastname TEXT, email TEXT, imageUrl TEXT, moreInfos TEXT, entreprise TEXT, address TEXT)'
       );
     },
-    version: 1
+    version: 5
     );
   }
 
@@ -55,6 +55,8 @@ class DBProvider {
         maps[i]['email'],
         maps[i]['imageUrl'],
         maps[i]['moreInfos'],
+        maps[i]['entreprise'],
+        maps[i]['address']
       )
     );
   }
@@ -71,6 +73,8 @@ class DBProvider {
       map[0]['email'],
       map[0]['imageUrl'],
       map[0]['moreInfos'],
+      map[0]['entreprise'],
+      map[0]['address']
     );
   }
     return null;

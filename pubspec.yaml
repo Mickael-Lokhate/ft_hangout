@@ -40,6 +40,7 @@ dependencies:
   telephony: ^0.1.4
   sqflite:
   path:
+  image_picker:
 
 dev_dependencies:
   flutter_test:

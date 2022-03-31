@@ -1,6 +1,8 @@
 {
 	"backgroundMessage": "App mise en fond à",
 	"phoneLabel": "Téléphone",
+	"entrepriseLabel": "Entreprise",
+	"addressLabel": "Adresse postale",
 	"callLabel": "Appeler",
 	"editLabel": "Modifier",
 	"deleteLabel": "Supprimer",
@@ -13,12 +15,17 @@
 	"blueLabel": "Bleu",
 	"yellowLabel": "Jaune",
 	"greenLabel": "Vert",
+	"orangeLabel": "Orange",
+	"purpleLabel": "Violet",
+	"pinkLabel": "Rose",
 	"noContactLabel": "Ajoutez votre premier contact avec le bouton +",
 	"messageFieldHint": "Écrire un message",
 	"errorMessage": "Entrer un message",
 	"nameFieldLabel": "Un prénom (*)",
 	"lastnameFieldLabel": "Un nom",
 	"phoneFieldLabel": "Un numéro de téléphone (*)",
+	"entrepriseFieldLabel": "Nom de l'entreprise",
+	"addressFieldLabel": "Adresse postale",
 	"emailFieldLabel": "Une address mail",
 	"moreFieldLabel": "Plus de détails",
 	"errorName": "Le nom est obligatoire",
@@ -33,5 +40,7 @@
 	"createButton": "Créer",
 	"noMessages": "Aucun messages pour le moment",
 	"moreLabel": "Plus de détails",
-	"newMessage": "Un nouveau contact à été créé : "
+	"newMessage": "Un nouveau contact à été créé : ",
+	"photoButton": "Prendre une photo",
+	"galleryHint": "Cliquez sur l'avatar pour choisir dans la galerie"
 }

@@ -1,6 +1,8 @@
 {
 	"backgroundMessage": "App set in background at",
 	"phoneLabel": "Phone",
+	"addressLabel": "Postal Address",
+	"entrepriseLabel": "Company",
 	"callLabel": "Call",
 	"editLabel": "Edit",
 	"deleteLabel": "Delete",
@@ -13,6 +15,9 @@
 	"blueLabel": "Blue",
 	"yellowLabel": "Yellow",
 	"greenLabel": "Green",
+	"orangeLabel": "Orange",
+	"purpleLabel": "Purple",
+	"pinkLabel": "Pink",
 	"noContactLabel": "Add your first contact with the + button",
 	"messageFieldHint": "Type a message",
 	"errorMessage": "Enter a message first",
@@ -21,6 +26,8 @@
 	"phoneFieldLabel": "Enter a phone number (*)",
 	"emailFieldLabel": "Enter an email",
 	"moreFieldLabel": "Enter more details",
+	"entrepriseFieldLabel": "Enter the entreprise",
+	"addressFieldLabel": "Enter the postal address",
 	"errorName": "Please enter a name",
 	"errorEmail": "Please enter a valid email address",
 	"errorPhone": "Please enter a valid french phone number",
@@ -33,5 +40,7 @@
 	"createButton": "Create",
 	"noMessages": "No messages yet",
 	"moreLabel": "More details",
-	"newMessage": "A new contact as been created : "
+	"newMessage": "A new contact as been created : ",
+	"photoButton": "Take a picture",
+	"galleryHint": "Click on the avatar to choose from gallery"
 }
