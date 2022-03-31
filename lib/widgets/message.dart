@@ -16,10 +16,12 @@ class MessageWidget extends StatelessWidget {
   Widget _buildMessage() {
     MaterialAccentColor bgColor = Colors.blueAccent;
     CrossAxisAlignment align = CrossAxisAlignment.end;
+    MainAxisAlignment alignMain = MainAxisAlignment.end;
     TextAlign textAlign = TextAlign.right;
     if (message.type != SmsType.MESSAGE_TYPE_SENT) {
       bgColor = Colors.greenAccent;
       align = CrossAxisAlignment.start;
+      alignMain = MainAxisAlignment.start;
       textAlign = TextAlign.left;
     }
 
@@ -47,6 +49,7 @@ class MessageWidget extends StatelessWidget {
             color: bgColor,
           ),
           Row(
+            mainAxisAlignment: alignMain,
             children: [
               Text(stringDate, textAlign: textAlign),
               icon
