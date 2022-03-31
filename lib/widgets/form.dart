@@ -19,7 +19,8 @@ enum FieldType {
 
 class ContactForm extends StatefulWidget {
   final Contact? contact;
-  const ContactForm(this.contact, { Key? key }) : super(key: key);
+  String photoString = '';
+  ContactForm(this.contact, { Key? key }) : super(key: key);
 
   @override
   _ContactFormState createState() => _ContactFormState();
@@ -34,7 +35,6 @@ class _ContactFormState extends State<ContactForm> {
   final moreInfoController = TextEditingController();
   final entrepriseController = TextEditingController();
   final addressController = TextEditingController();
-  String photoString = '';
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,9 @@ class _ContactFormState extends State<ContactForm> {
       moreInfoController.text = widget.contact!.moreInfos ?? '';
       entrepriseController.text = widget.contact!.entreprise ?? '';
       addressController.text = widget.contact!.address ?? '';
+      if (widget.photoString.isEmpty) {
+        widget.photoString = widget.contact!.imageUrl ?? '';
+      }
     }
     
   
@@ -87,11 +90,11 @@ class _ContactFormState extends State<ContactForm> {
   }
 
   Widget _buildAvatar() {
-    if (widget.contact != null && widget.contact!.imageUrl != null && widget.contact!.imageUrl!.isNotEmpty) {
+    if (widget.photoString.isNotEmpty) {
       return CircleAvatar(
             radius: 64,
             child: const Icon(Icons.person, size: 128,),
-            foregroundImage: Utility.imageFromBase64String(widget.contact!.imageUrl!).image,
+            foregroundImage: Utility.imageFromBase64String(widget.photoString).image,
       );
     } else {
       return const CircleAvatar(
@@ -106,7 +109,10 @@ class _ContactFormState extends State<ContactForm> {
       onTap: () {
         ImagePicker().pickImage(source: ImageSource.gallery).then((imgFile) async {
           if (imgFile != null) {
-            photoString = Utility.base64String(await imgFile.readAsBytes());
+            String imgString = Utility.base64String(await imgFile.readAsBytes());
+            setState(() {
+              widget.photoString = imgString;
+            });
           }
         });
       },
@@ -180,8 +186,8 @@ class _ContactFormState extends State<ContactForm> {
           newContact.moreInfos = moreInfoController.text;
           newContact.entreprise = entrepriseController.text;
           newContact.address = addressController.text;
-          if (photoString.isNotEmpty){
-            newContact.imageUrl = photoString;
+          if (widget.photoString.isNotEmpty){
+            newContact.imageUrl = widget.photoString;
           }
 
           // UPDATE IN DB
@@ -195,8 +201,8 @@ class _ContactFormState extends State<ContactForm> {
           Navigator.of(context).pop();
         } else if (_formKey.currentState!.validate() && widget.contact == null) {
           String? image;
-          if (photoString.isNotEmpty) {
-            image = photoString;
+          if (widget.photoString.isNotEmpty) {
+            image = widget.photoString;
           }
           Contact newContact = Contact(
             0,
