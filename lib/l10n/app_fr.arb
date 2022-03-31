@@ -40,5 +40,6 @@
 	"createButton": "Créer",
 	"noMessages": "Aucun messages pour le moment",
 	"moreLabel": "Plus de détails",
-	"newMessage": "Un nouveau contact à été créé : "
+	"newMessage": "Un nouveau contact à été créé : ",
+	"photoButton": "Prendre une photo"
 }

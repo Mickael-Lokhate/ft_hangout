@@ -57,7 +57,9 @@ class _ContactFormState extends State<ContactForm> {
       child: Consumer<ContactListModel>(
         builder: (context, list, _) => Column(
         children: <Widget>[
-          _buildImage(list),
+          const SizedBox(height: 10,),
+          _buildImage(),
+          _buildCameraButton(),
           _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
           _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),
           _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController, list),
@@ -69,6 +71,22 @@ class _ContactFormState extends State<ContactForm> {
         ],
       )
       ),
+    );
+  }
+
+  Widget _buildCameraButton() {
+    return ElevatedButton(
+      onPressed: () {
+        ImagePicker().pickImage(source: ImageSource.camera).then((imgFile) async {
+          if (imgFile != null) {
+            String imgString = Utility.base64String(await imgFile.readAsBytes());
+            setState(() {
+              widget.photoString = imgString;
+            });
+          }
+        });
+      },
+      child: Text(AppLocalizations.of(context)!.photoButton)
     );
   }
 
@@ -104,7 +122,7 @@ class _ContactFormState extends State<ContactForm> {
     }
   }
 
-  Widget _buildImage(ContactListModel list) {
+  Widget _buildImage() {
     return GestureDetector(
       onTap: () {
         ImagePicker().pickImage(source: ImageSource.gallery).then((imgFile) async {
