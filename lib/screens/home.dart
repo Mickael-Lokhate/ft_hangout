@@ -3,6 +3,7 @@ import 'package:ft_hangout/models/config.dart';
 import 'package:ft_hangout/screens/contact_details.dart';
 import 'package:ft_hangout/screens/create_contact.dart';
 import 'package:ft_hangout/utility.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:telephony/telephony.dart';
@@ -120,7 +121,25 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
         padding: const EdgeInsets.all(8),
         itemCount: list.contacts.length,
         itemBuilder: (BuildContext context, int index) {
-          return _buildRowContact(list.contacts, list.contacts[index]);
+          return Dismissible(
+            key: ValueKey<int>(index),
+            dismissThresholds: const {DismissDirection.endToStart: 0.6},
+            background: Card(
+              color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: const [
+                  Icon(Icons.delete, color: Colors.white, size: 30,),
+                  SizedBox(width: 10,)
+                ]
+              )
+            ),
+            onDismissed: (DismissDirection dir) {
+                list.remove(list.contacts[index].id);
+            },
+            direction: DismissDirection.endToStart,
+            child: _buildRowContact(list, list.contacts[index])
+          );
         },
       );
     } else {
@@ -143,7 +162,7 @@ class _ContactListState extends State<ContactList> with WidgetsBindingObserver {
     }
   }
 
-  Widget _buildRowContact(List<Contact> list, Contact currentContact) {
+  Widget _buildRowContact(ContactListModel list, Contact currentContact) {
       return GestureDetector(
           child: Card(
             child: ListTile(
