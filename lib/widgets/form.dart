@@ -10,7 +10,9 @@ enum FieldType {
   phonenumber,
   email,
   imageUrl,
-  moreInfos
+  moreInfos,
+  entreprise,
+  address
 }
 
 class ContactForm extends StatefulWidget {
@@ -28,6 +30,8 @@ class _ContactFormState extends State<ContactForm> {
   final phoneNumberController = TextEditingController();
   final emailController = TextEditingController();
   final moreInfoController = TextEditingController();
+  final entrepriseController = TextEditingController();
+  final addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,8 @@ class _ContactFormState extends State<ContactForm> {
       phoneNumberController.text = widget.contact!.phonenumber;
       emailController.text = widget.contact!.email ?? '';
       moreInfoController.text = widget.contact!.moreInfos ?? '';
+      entrepriseController.text = widget.contact!.entreprise ?? '';
+      addressController.text = widget.contact!.address ?? '';
     }
     
   
@@ -48,7 +54,9 @@ class _ContactFormState extends State<ContactForm> {
           _buildTextField(FieldType.name, AppLocalizations.of(context)!.nameFieldLabel,TextInputType.name, nameController, list),
           _buildTextField(FieldType.lastname,AppLocalizations.of(context)!.lastnameFieldLabel, TextInputType.text, lastnameController, list),
           _buildTextField(FieldType.phonenumber, AppLocalizations.of(context)!.phoneFieldLabel, TextInputType.phone, phoneNumberController, list),
-          _buildTextField( FieldType.email,AppLocalizations.of(context)!.emailFieldLabel, TextInputType.emailAddress, emailController, list),
+          _buildTextField(FieldType.email,AppLocalizations.of(context)!.emailFieldLabel, TextInputType.emailAddress, emailController, list),
+          _buildTextField(FieldType.entreprise, AppLocalizations.of(context)!.entrepriseFieldLabel, TextInputType.text, entrepriseController, list),
+          _buildTextField(FieldType.address, AppLocalizations.of(context)!.addressFieldLabel, TextInputType.streetAddress, addressController, list),
           _buildTextField(FieldType.moreInfos, AppLocalizations.of(context)!.moreFieldLabel, TextInputType.text, moreInfoController, list),
           _buildValidationButton(list)
         ],
@@ -121,8 +129,7 @@ class _ContactFormState extends State<ContactForm> {
              return AppLocalizations.of(context)!.errorImage;
             }
           break;
-          case FieldType.moreInfos:
-            
+          default:
           break;
         }
         return null;
@@ -144,6 +151,8 @@ class _ContactFormState extends State<ContactForm> {
           newContact.lastname = lastnameController.text;
           newContact.email = emailController.text;
           newContact.moreInfos = moreInfoController.text;
+          newContact.entreprise = entrepriseController.text;
+          newContact.address = addressController.text;
 
           // UPDATE IN DB
           list.update(newContact);
@@ -162,7 +171,9 @@ class _ContactFormState extends State<ContactForm> {
             lastnameController.text,
             emailController.text,
             null,
-            moreInfoController.text);
+            moreInfoController.text,
+            entrepriseController.text,
+            addressController.text);
           
           list.add(newContact);
           

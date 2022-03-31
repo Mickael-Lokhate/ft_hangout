@@ -25,8 +25,16 @@ class DBProvider {
         'CREATE TABLE contacts(id INTEGER PRIMARY KEY, name TEXT, phonenumber TEXT, lastname TEXT, email TEXT, imageUrl TEXT, moreInfos TEXT)'
       );
     },
-    version: 1
+    onUpgrade: _upgradeTables,
+    version: 5
     );
+  }
+
+  _upgradeTables(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute('ALTER TABLE contacts ADD COLUMN entreprise TEXT');
+      await db.execute('ALTER TABLE contacts ADD COLUMN address TEXT');
+    }
   }
 
   insertContact(Contact newContact) async {
@@ -55,6 +63,8 @@ class DBProvider {
         maps[i]['email'],
         maps[i]['imageUrl'],
         maps[i]['moreInfos'],
+        maps[i]['entreprise'],
+        maps[i]['address']
       )
     );
   }
@@ -71,6 +81,8 @@ class DBProvider {
       map[0]['email'],
       map[0]['imageUrl'],
       map[0]['moreInfos'],
+      map[0]['entreprise'],
+      map[0]['address']
     );
   }
     return null;

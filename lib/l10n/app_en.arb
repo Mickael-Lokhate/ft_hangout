@@ -1,6 +1,8 @@
 {
 	"backgroundMessage": "App set in background at",
 	"phoneLabel": "Phone",
+	"addressLabel": "Postal Address",
+	"entrepriseLabel": "Company",
 	"callLabel": "Call",
 	"editLabel": "Edit",
 	"deleteLabel": "Delete",
@@ -21,6 +23,8 @@
 	"phoneFieldLabel": "Enter a phone number (*)",
 	"emailFieldLabel": "Enter an email",
 	"moreFieldLabel": "Enter more details",
+	"entrepriseFieldLabel": "Enter the entreprise",
+	"addressFieldLabel": "Enter the postal address",
 	"errorName": "Please enter a name",
 	"errorEmail": "Please enter a valid email address",
 	"errorPhone": "Please enter a valid french phone number",

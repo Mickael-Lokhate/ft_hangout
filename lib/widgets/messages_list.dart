@@ -52,7 +52,7 @@ class _MessagesListWidgetState extends State<MessagesListWidget> {
           tmp.sort((m1, m2) {
             DateTime m1Date = DateTime.fromMicrosecondsSinceEpoch(m1.date! * 1000, isUtc: false).toLocal();
             DateTime m2Date = DateTime.fromMicrosecondsSinceEpoch(m2.date! * 1000, isUtc: false).toLocal();
-
+            
             return m2Date.compareTo(m1Date);
           });
         setState(() {

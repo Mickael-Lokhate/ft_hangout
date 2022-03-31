@@ -63,6 +63,8 @@ class _ContactDetailsState extends State<ContactDetails> {
             _buildActionButtons(context, list, widget.contact),
             const SizedBox(height: 10,),
             _buildCard(AppLocalizations.of(context)!.phoneLabel, widget.contact.phonenumber),
+            _buildCard(AppLocalizations.of(context)!.entrepriseLabel, widget.contact.entreprise ?? ''),
+            _buildCard(AppLocalizations.of(context)!.addressLabel, widget.contact.address ?? ''),
             _buildCard(AppLocalizations.of(context)!.moreLabel, widget.contact.moreInfos ?? ''),
           ],
         ),

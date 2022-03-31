@@ -12,8 +12,10 @@ class Contact {
   String?   email;
   String?   imageUrl;
   String?   moreInfos;
+  String?   entreprise;
+  String?   address;
 
-  Contact(this.id, this.name, this.phonenumber, [this.lastname, this.email, this.imageUrl, this.moreInfos]);
+  Contact(this.id, this.name, this.phonenumber, [this.lastname, this.email, this.imageUrl, this.moreInfos, this.entreprise, this.address]);
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,7 +24,9 @@ class Contact {
       'lastname': lastname,
       'email': email,
       'imageUrl': imageUrl,
-      'moreInfos': moreInfos
+      'moreInfos': moreInfos,
+      'entreprise': entreprise,
+      'address': address
     };
   }
 }

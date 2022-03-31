@@ -1,6 +1,8 @@
 {
 	"backgroundMessage": "App mise en fond à",
 	"phoneLabel": "Téléphone",
+	"entrepriseLabel": "Entreprise",
+	"addressLabel": "Adresse postale",
 	"callLabel": "Appeler",
 	"editLabel": "Modifier",
 	"deleteLabel": "Supprimer",
@@ -19,6 +21,8 @@
 	"nameFieldLabel": "Un prénom (*)",
 	"lastnameFieldLabel": "Un nom",
 	"phoneFieldLabel": "Un numéro de téléphone (*)",
+	"entrepriseFieldLabel": "Nom de l'entreprise",
+	"addressFieldLabel": "Adresse postale",
 	"emailFieldLabel": "Une address mail",
 	"moreFieldLabel": "Plus de détails",
 	"errorName": "Le nom est obligatoire",
