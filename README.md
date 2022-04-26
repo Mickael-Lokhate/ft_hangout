@@ -1,6 +1,7 @@
-# ft_hangout [![mlokhate's 42 ft_hangouts Score](https://badge42.vercel.app/api/v2/cl1mdvtu6009009mod72g373r/project/2548155)](https://github.com/JaeSeoKim/badge42)
+# ft_hangout - ![mlokhate's 42 ft_hangouts Score](https://badge42.vercel.app/api/v2/cl1mdvtu6009009mod72g373r/project/2548155)
 
-A new Flutter project.
+For this project, you will have to design an mobile application that will allow to create a
+contact and send texts.
 
 ## Goal
 You will have to fulfill various tasks that will help you understand how a mobile app
