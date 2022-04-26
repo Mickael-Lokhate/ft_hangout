@@ -64,6 +64,14 @@ color. Finally, the app icon will have to be the 42 logo.
 - Call ✅
 - Automatically create contact ✅
 
+## Usage
+- Install flutter
+- Install Android Studio + Android emulator
+- ``` git clone https://github.com/Mickael-Lokhate/ft_hangout```
+- ``` cd ft_hangout```
+- Launch Android Emulator
+- Launch ``` flutter run ```
+
 ## Documentation
 
 Dart Doc : [https://dart.dev/guides](https://dart.dev/guides)
